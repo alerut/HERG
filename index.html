@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Evolution Research Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bone: #f5f0e8;
+    --parchment: #ede6d4;
+    --umber: #2c1f0f;
+    --sienna: #8b4513;
+    --ochre: #c8860a;
+    --slate: #4a5568;
+    --deep: #1a1208;
+    --accent: #b5471b;
+    --light-line: rgba(44,31,15,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bone);
+    color: var(--umber);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--light-line);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--umber);
+    text-decoration: none;
+    line-height: 1.3;
+  }
+  .nav-logo span { display: block; color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--umber);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 2px;
+    transition: color 0.25s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10rem 4rem 6rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 5.5vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    color: var(--deep);
+    margin-bottom: 2rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--slate);
+    max-width: 42ch;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone);
+    background: var(--umber);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border: 2px solid var(--umber);
+    transition: all 0.3s ease;
+    width: fit-content;
+  }
+  .hero-cta:hover {
+    background: transparent;
+    color: var(--umber);
+  }
+  .hero-cta .arrow { transition: transform 0.3s; }
+  .hero-cta:hover .arrow { transform: translateX(6px); }
+
+  .hero-right {
+    position: relative;
+    background: var(--umber);
+    overflow: hidden;
+  }
+
+  /* Skull / fossil SVG illustration */
+  .hero-art {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-art svg {
+    width: 75%;
+    opacity: 0.18;
+  }
+
+  .hero-data-strip {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 2rem 3rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(0,0,0,0.3);
+  }
+
+  .hero-stat {
+    padding: 1.2rem 1rem;
+    background: rgba(245,240,232,0.06);
+    text-align: center;
+  }
+
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bone);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.55);
+    margin-top: 0.4rem;
+    display: block;
+  }
+
+  .hero-year-tag {
+    position: absolute;
+    top: 3rem; right: 2.5rem;
+    writing-mode: vertical-rl;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+  }
+
+  /* ── SECTION SHARED ── */
+  section { padding: 7rem 0; }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 28px; height: 1px;
+    background: var(--accent);
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-heading em { font-style: italic; color: var(--sienna); }
+
+  /* ── ABOUT ── */
+  #about { background: var(--parchment); border-top: 1px solid var(--light-line); }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 5fr 4fr;
+    gap: 5rem;
+    align-items: start;
+    margin-top: 3.5rem;
+  }
+
+  .about-body p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--slate);
+    margin-bottom: 1.4rem;
+    line-height: 1.85;
+  }
+
+  .about-body p strong { color: var(--umber); font-weight: 600; }
+
+  .about-sidebar {
+    border-left: 2px solid var(--ochre);
+    padding-left: 2.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .sidebar-heading {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--umber);
+    margin-bottom: 1.2rem;
+  }
+
+  .focus-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .focus-list li {
+    font-size: 0.95rem;
+    color: var(--slate);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .focus-list li::before {
+    content: '◆';
+    color: var(--ochre);
+    font-size: 0.55rem;
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+
+  /* ── PEOPLE ── */
+  #people { background: var(--bone); }
+
+  .people-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .person-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    background: var(--umber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--bone);
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+
+  .person-initials-color-1 { background: var(--umber); }
+  .person-initials-color-2 { background: var(--sienna); }
+  .person-initials-color-3 { background: #3d4f3e; }
+  .person-initials-color-4 { background: #2d3e5f; }
+
+  .person-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--deep);
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .person-card {
+    background: var(--parchment);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .person-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--ochre);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .person-card:hover::before { transform: scaleX(1); }
+  .person-card:hover { transform: translateY(-4px); }
+
+  .person-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    height: 4.2em;
+    line-height: 1.4;
+    overflow: hidden;
+  }
+
+  .person-bio {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--slate);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    flex: 1;
+  }
+
+  .person-links {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .person-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--umber);
+    text-decoration: none;
+    border: 1px solid var(--umber);
+    padding: 0.35rem 0.8rem;
+    transition: all 0.25s;
+  }
+  .person-link:hover {
+    background: var(--umber);
+    color: var(--bone);
+  }
+
+  /* ── RESEARCH ── */
+  #research {
+    background: var(--umber);
+    color: var(--bone);
+  }
+
+  #research .section-label { color: var(--ochre); }
+  #research .section-label::before { background: var(--ochre); }
+  #research .section-heading { color: var(--bone); }
+
+  .research-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 4rem;
+  }
+
+  .research-card {
+    background: rgba(255,255,255,0.05);
+    padding: 3rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .research-card:hover { background: rgba(255,255,255,0.09); }
+
+  .research-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(200,134,10,0.25);
+    line-height: 1;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .research-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--bone);
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .research-card-body {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.65);
+    line-height: 1.8;
+  }
+
+  .research-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    border: 1px solid rgba(200,134,10,0.35);
+    padding: 0.25rem 0.65rem;
+  }
+
+  /* ── PUBLICATIONS ── */
+  #publications { background: var(--bone); }
+
+  .pub-list {
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .pub-item {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding: 2.2rem 0;
+    border-bottom: 1px solid var(--light-line);
+    align-items: start;
+    transition: background 0.2s;
+  }
+
+  .pub-item:first-child { border-top: 1px solid var(--light-line); }
+
+  .pub-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    padding-top: 0.3rem;
+  }
+
+  .pub-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--deep);
+    margin-bottom: 0.4rem;
+    line-height: 1.3;
+  }
+
+  .pub-authors {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--slate);
+    margin-bottom: 0.3rem;
+  }
+
+  .pub-journal {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ochre);
+  }
+
+  .pub-doi {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    text-decoration: none;
+    margin-left: 1rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .pub-doi:hover { opacity: 1; }
+
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--parchment);
+    border-top: 1px solid var(--light-line);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-top: 4rem;
+  }
+
+  .contact-info p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--slate);
+    margin-bottom: 2.5rem;
+    line-height: 1.85;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .contact-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    min-width: 70px;
+    padding-top: 0.15rem;
+  }
+
+  .contact-value {
+    font-size: 1rem;
+    color: var(--umber);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--umber);
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: var(--bone);
+    border: 1px solid var(--light-line);
+    border-bottom: 2px solid var(--umber);
+    padding: 0.8rem 1rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    color: var(--umber);
+    outline: none;
+    transition: border-color 0.25s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-bottom-color: var(--accent);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+  .btn-submit {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bone);
+    background: var(--umber);
+    border: 2px solid var(--umber);
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    align-self: flex-start;
+    margin-top: 0.5rem;
+  }
+  .btn-submit:hover { background: transparent; color: var(--umber); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep);
+    color: rgba(245,240,232,0.5);
+    padding: 3rem 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    color: var(--bone);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  .footer-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  /* ── DIVIDER DECORATION ── */
+  .deco-line {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0 3rem;
+    color: var(--ochre);
+    font-size: 0.75rem;
+  }
+  .deco-line::before,
+  .deco-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light-line);
+  }
+
+  /* ── SCROLL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── HERO ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes drawLine {
+    from { width: 0; }
+    to   { width: 40px; }
+  }
+  @keyframes rotateSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  .hero-eyebrow { animation: fadeUp 0.8s 0.2s both; }
+  .hero-title   { animation: fadeUp 0.9s 0.4s both; }
+  .hero-subtitle{ animation: fadeUp 0.9s 0.6s both; }
+  .hero-cta     { animation: fadeUp 0.9s 0.8s both; }
+  .hero-right   { animation: fadeIn 1.2s 0.3s both; }
+
+  /* ── FOSSIL DECORATIVE RING ── */
+  /* ── RING TOOLTIPS ── */
+  .ring-part {
+    cursor: pointer;
+    transition: stroke 0.3s, stroke-width 0.3s;
+  }
+  .ring-part:hover {
+    stroke: rgba(200,134,10,0.55) !important;
+  }
+  .ring-tooltip {
+    position: absolute;
+    background: rgba(26,18,8,0.95);
+    border: 1px solid rgba(200,134,10,0.4);
+    border-top: 2px solid var(--ochre);
+    padding: 0.8rem 1.1rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    z-index: 30;
+    width: 210px;
+    text-align: left;
+  }
+  .ring-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .ring-tooltip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 0.35rem;
+  }
+  .ring-tooltip-body {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.82);
+    line-height: 1.55;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 8rem 2rem 4rem; }
+    .hero-right { min-height: 40vh; }
+    .container { padding: 0 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .people-grid { grid-template-columns: repeat(2, 1fr); }
+    .research-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-meta { text-align: center; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  /* ── LARGE-SCALE PROJECTS ── */
+  #projects { background: var(--bone); border-top: 1px solid var(--light-line); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 4rem;
+  }
+
+  .project-card {
+    background: var(--parchment);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.35s, transform 0.3s;
+  }
+
+  .project-card:hover {
+    border-bottom-color: var(--ochre);
+    transform: translateY(-3px);
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle at top right, rgba(200,134,10,0.08), transparent 70%);
+  }
+
+  .project-funder {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .project-funder::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--accent);
+  }
+
+  .project-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+
+  .project-card-body {
+    font-size: 0.97rem;
+    font-weight: 300;
+    color: var(--slate);
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--light-line);
+  }
+
+  .project-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .project-meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ochre);
+  }
+
+  .project-meta-value {
+    font-size: 0.88rem;
+    color: var(--umber);
+  }
+
+  @media (max-width: 900px) {
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+  /* ── LOGO MODAL ── */
+  .logo-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,18,8,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .logo-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .logo-modal {
+    background: var(--parchment);
+    max-width: 760px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(24px);
+    transition: transform 0.35s ease;
+    border-top: 3px solid var(--ochre);
+  }
+
+  .logo-modal-backdrop.open .logo-modal {
+    transform: translateY(0);
+  }
+
+  .logo-modal-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--slate);
+    background: none;
+    border: 1px solid var(--light-line);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logo-modal-close:hover { background: var(--umber); color: var(--bone); border-color: var(--umber); }
+
+  .logo-modal-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .logo-modal-art {
+    background: var(--umber);
+    padding: 3.5rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .logo-modal-art::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(200,134,10,0.08), transparent 70%);
+  }
+
+  .logo-modal-art svg { position: relative; z-index: 1; }
+
+  .logo-modal-caption {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-modal-text {
+    padding: 3.5rem 3rem 3rem;
+  }
+
+  .logo-modal-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .logo-modal-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px; height: 1px;
+    background: var(--accent);
+  }
+
+  .logo-modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--deep);
+    line-height: 1.2;
+    margin-bottom: 1.8rem;
+  }
+  .logo-modal-title em { font-style: italic; color: var(--sienna); }
+
+  .logo-element {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+    padding-bottom: 1.3rem;
+    border-bottom: 1px solid var(--light-line);
+  }
+  .logo-element:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .logo-element-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-element-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 0.25rem;
+  }
+
+  .logo-element-desc {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--slate);
+    line-height: 1.6;
+  }
+
+  .nav-logo-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .nav-logo-btn::after {
+    content: '?';
+    position: absolute;
+    top: -4px; right: -10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.45rem;
+    color: var(--ochre);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .nav-logo-btn:hover::after { opacity: 1; }
+
+  @media (max-width: 700px) {
+    .logo-modal-inner { grid-template-columns: 1fr; }
+    .logo-modal-art { padding: 2.5rem 2rem; }
+    .logo-modal-text { padding: 2rem; }
+  }
+  /* ── HERO SKULL INTERACTIVITY ── */
+  .hero-art {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  #heroSkull {
+    pointer-events: all;
+  }
+
+  .skull-part {
+    cursor: pointer;
+    transition: opacity 0.25s, filter 0.25s;
+  }
+  .skull-part:hover {
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 8px rgba(200,134,10,0.6));
+  }
+
+  .skull-tooltip {
+    position: absolute;
+    background: rgba(26,18,8,0.92);
+    border: 1px solid rgba(200,134,10,0.4);
+    border-left: 2px solid var(--ochre);
+    padding: 0.7rem 1rem;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    z-index: 20;
+    max-width: 200px;
+    backdrop-filter: blur(4px);
+  }
+
+  .skull-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .skull-tooltip-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 0.3rem;
+  }
+
+  .skull-tooltip-text {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(245,240,232,0.85);
+    line-height: 1.5;
+  }
+
+  /* ── RING TOOLTIPS ── */
+  .hero-stat {
+    padding: 1.2rem 1rem;
+    background: rgba(245,240,232,0.06);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <button class="nav-logo-btn" onclick="openLogoModal()" title="About the mark">
+    <!-- HERG SVG Logo -->
+    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer circle -->
+      <circle cx="21" cy="21" r="20" stroke="#2c1f0f" stroke-width="1.2" fill="none"/>
+      <!-- Inner orbit ring -->
+      <circle cx="21" cy="21" r="14" stroke="#c8860a" stroke-width="0.7" fill="none" stroke-dasharray="2.5 2.5"/>
+      <!-- Stylised cranium dome -->
+      <path d="M11 22 Q11 10 21 10 Q31 10 31 22" stroke="#2c1f0f" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Zygomatic / cheekbone line -->
+      <path d="M11 22 Q11 27 14 28 L28 28 Q31 27 31 22" stroke="#2c1f0f" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+      <!-- Jawline suggestion -->
+      <path d="M15 28 Q15 33 21 33 Q27 33 27 28" stroke="#2c1f0f" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <!-- Left eye socket -->
+      <ellipse cx="16.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+      <!-- Right eye socket -->
+      <ellipse cx="25.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+      <!-- Nasal bridge dot -->
+      <circle cx="21" cy="21" r="0.8" fill="#c8860a"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;line-height:1.2;">
+      <span style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;font-weight:400;color:#2c1f0f;">HERG</span>
+      <span style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.13em;color:#b5471b;text-transform:uppercase;">Human Evolution Research Group</span>
+    </div>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#people">People</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Human Evolution Research Group</div>
+    <h1 class="hero-title">
+      Tracing the<br><em>deep roots</em><br>of humanity
+    </h1>
+    <p class="hero-subtitle">
+      We investigate the biological, cognitive, and social dimensions of human behavioural evolution — from cross-cultural cognition and child development to evolutionary demography, the origins of cooperation, and the complex systems that govern how knowledge and culture spread.
+    </p>
+    <a href="#research" class="hero-cta">
+      Explore Our Research <span class="arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-right">
+
+    <!-- Ring tooltip -->
+    <div class="ring-tooltip" id="ringTooltip">
+      <div class="ring-tooltip-label" id="ringTooltipLabel"></div>
+      <div class="ring-tooltip-body" id="ringTooltipBody"></div>
+    </div>
+
+    <div class="hero-art" id="heroArt">
+      <!-- Interactive annotated skull + rings all in one SVG -->
+      <svg id="heroSkull" viewBox="0 0 300 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:relative;z-index:2;overflow:visible;">
+
+        <!-- ── ORBIT RINGS (stroke-only hover, drawn first so skull is on top) ── -->
+        <!-- Inner ring: Deep Time -->
+        <circle class="ring-part" cx="150" cy="150" r="130"
+          stroke="rgba(245,240,232,0.18)" stroke-width="6" fill="none"
+          pointer-events="stroke"
+          data-label="Deep Time"
+          data-text="The innermost orbit represents the ~300,000 years of Homo sapiens — a blink in the 4-billion-year story of life on Earth."/>
+
+        <!-- Middle ring: Hominin Evolution -->
+        <circle class="ring-part" cx="150" cy="150" r="190"
+          stroke="rgba(245,240,232,0.12)" stroke-width="8" fill="none"
+          pointer-events="stroke"
+          data-label="Hominin Evolution"
+          data-text="The middle orbit spans the ~7 million years since our last common ancestor with chimpanzees — the full arc of hominin evolution."/>
+
+        <!-- Outer ring: Evolutionary Time -->
+        <circle class="ring-part" cx="150" cy="150" r="260"
+          stroke="rgba(245,240,232,0.07)" stroke-width="10" fill="none"
+          pointer-events="stroke"
+          data-label="Evolutionary Time"
+          data-text="The outer orbit evokes geological deep time — the vast timescale across which natural selection, cultural evolution, and complex cognition emerged."/>
+
+        <!-- Neurocranium / braincase -->
+        <ellipse class="skull-part" id="sp-brain" cx="150" cy="130" rx="105" ry="105"
+          stroke="#f5f0e8" stroke-width="2" opacity="0.55"
+          data-label="Neurocranium"
+          data-text="The expanded braincase is a hallmark of our genus. Its relative size tripled over 3 million years of hominin evolution."/>
+
+        <!-- Zygomatic arch / cheekbones -->
+        <path class="skull-part" id="sp-zygo" d="M60 185 Q80 240 120 255 L180 255 Q220 240 240 185"
+          stroke="#f5f0e8" stroke-width="2" fill="none" opacity="0.55"
+          data-label="Zygomatic Arch"
+          data-text="The cheekbone structure. Its reduction over time reflects dietary shifts from tough plant matter to cooked food and meat."/>
+
+        <!-- Mandible / jaw -->
+        <path class="skull-part" id="sp-jaw" d="M105 255 L100 290 Q100 305 115 305 L185 305 Q200 305 200 290 L195 255"
+          stroke="#f5f0e8" stroke-width="1.8" fill="none" opacity="0.55"
+          data-label="Mandible"
+          data-text="The lower jaw. Modern humans have a distinctive chin — the mental protuberance — absent in all other hominins and apes."/>
+
+        <!-- Left orbit -->
+        <ellipse class="skull-part" id="sp-lorbit" cx="112" cy="175" rx="22" ry="17"
+          stroke="#f5f0e8" stroke-width="1.8" fill="none" opacity="0.55"
+          data-label="Orbital Socket"
+          data-text="The eye socket. Orbital shape and brow ridge thickness are key diagnostic traits used to classify and date fossil hominin specimens."/>
+
+        <!-- Right orbit -->
+        <ellipse class="skull-part" id="sp-rorbit" cx="188" cy="175" rx="22" ry="17"
+          stroke="#f5f0e8" stroke-width="1.8" fill="none" opacity="0.55"
+          data-label="Orbital Socket"
+          data-text="The eye socket. Orbital shape and brow ridge thickness are key diagnostic traits used to classify and date fossil hominin specimens."/>
+
+        <!-- Nasal bridge -->
+        <path class="skull-part" id="sp-nasal" d="M134 175 L166 175"
+          stroke="#f5f0e8" stroke-width="1.5" opacity="0.55"
+          data-label="Nasal Bridge"
+          data-text="The nasion — a standard craniometric landmark. Nasal morphology varies across populations as an adaptation to local climate and humidity."/>
+
+        <!-- Frontal bone / forehead -->
+        <path class="skull-part" id="sp-frontal" d="M150 75 Q145 95 140 115 Q150 120 160 115 Q155 95 150 75Z"
+          stroke="#f5f0e8" stroke-width="1.5" fill="none" opacity="0.55"
+          data-label="Frontal Bone"
+          data-text="The forehead. The near-vertical frontal bone of H. sapiens contrasts sharply with the sloping foreheads of earlier hominins and Neanderthals."/>
+
+        <!-- Temporal lines -->
+        <line class="skull-part" id="sp-temp1" x1="45" y1="130" x2="70" y2="130"
+          stroke="#f5f0e8" stroke-width="1.5" opacity="0.55"
+          data-label="Temporal Line"
+          data-text="Marks the attachment of the temporalis muscle used in chewing. Its position indicates jaw muscle size and dietary habits of a species."/>
+        <line class="skull-part" id="sp-temp2" x1="230" y1="130" x2="255" y2="130"
+          stroke="#f5f0e8" stroke-width="1.5" opacity="0.55"
+          data-label="Temporal Line"
+          data-text="Marks the attachment of the temporalis muscle used in chewing. Its position indicates jaw muscle size and dietary habits of a species."/>
+
+        <!-- Nasion dot -->
+        <circle class="skull-part" id="sp-nasion" cx="150" cy="130" r="6" fill="#f5f0e8" opacity="0.45"
+          data-label="Nasion"
+          data-text="The intersection of the frontal and nasal bones. A primary reference point in craniometric analysis and forensic anthropology."/>
+
+      </svg>
+
+      <!-- Tooltip -->
+      <div class="skull-tooltip" id="skullTooltip">
+        <div class="skull-tooltip-label" id="tooltipLabel"></div>
+        <div class="skull-tooltip-text" id="tooltipText"></div>
+      </div>
+
+    </div>
+
+    <div class="hero-year-tag">UM6P · Rabat · Morocco</div>
+
+    <div class="hero-data-strip">
+      <div class="hero-stat">
+        <div class="hero-stat-num">4</div>
+        <span class="hero-stat-label">Principal Researchers</span>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">47+</div>
+        <span class="hero-stat-label">Publications</span>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <span class="hero-stat-label">Active Projects</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-heading">Interdisciplinary inquiry into<br><em>what makes us human</em></h2>
+
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>
+          The <strong>Human Evolution Research Group</strong> is an interdisciplinary team at the <strong>School of Collective Intelligence, Université Mohammed VI Polytechnique (UM6P)</strong>, Rabat, Morocco. We work at the intersection of evolutionary anthropology, cognitive science, biodemography, experimental philosophy, and complex systems to understand the biological, cultural, and social foundations of human behaviour.
+        </p>
+        <p>
+          Our research spans fieldwork in Bolivia, Morocco, Ecuador, Vanuatu, India, and Argentina, combining observational data, field experiments, Bayesian statistics, and mathematical modelling. We are affiliated with major long-running projects including the <em>Tsimane Health and Life History Project</em> and co-direct the <em>CoDeM2</em> longitudinal anthropological laboratory.
+        </p>
+        <p>
+          Based in Africa and committed to global scholarship, we are co-organising the <strong>HBES 2026</strong> (Human Behavior and Evolution Society) and <strong>CES 2026</strong> (Cultural Evolution Society) conferences, and welcome prospective graduate students, postdoctoral researchers, and collaborators from across the world.
+        </p>
+      </div>
+
+      <div class="about-sidebar reveal reveal-delay-1">
+        <div class="sidebar-heading">Research Focus Areas</div>
+        <ul class="focus-list">
+          <li>Cross-cultural cognition and conceptual development</li>
+          <li>Evolution of cooperation, leadership, and social complexity</li>
+          <li>Women's status, health, and evolutionary demography</li>
+          <li>Kinship, intermarriage, and intergroup relations</li>
+          <li>Experimental philosophy and moral cognition</li>
+          <li>Complex systems, networks, and collective intelligence</li>
+          <li>Health and lifestyle change in small-scale societies</li>
+          <li>Mathematical modelling and Bayesian statistics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ UC ROOTS STRIP ══ -->
+<div style="background:var(--umber);padding:1.8rem 0;border-top:1px solid rgba(255,255,255,0.06);">
+  <div style="max-width:1200px;margin:0 auto;padding:0 4rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ochre);white-space:nowrap;">UC System Alumni</div>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);min-width:20px;"></div>
+    <div style="font-family:'Crimson Pro',serif;font-size:1rem;font-weight:300;color:rgba(245,240,232,0.75);line-height:1.6;text-align:center;">
+      All four members of HERG hold doctoral degrees from the <strong style="color:var(--bone);font-weight:600;">University of California system</strong> —
+      Dr Erut from <em>UC Los Angeles</em> (Biological Anthropology), Dr Alami and Dr Seabright from <em>UC Santa Barbara</em> (Anthropology), and Dr Moser from <em>UC Merced</em> (Cognitive and Information Sciences) — bringing a shared tradition of rigorous, field-based and computational evolutionary science to UM6P.
+    </div>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);min-width:20px;"></div>
+  </div>
+</div>
+
+<!-- ══ LARGE-SCALE PROJECTS ══ -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Large-Scale Projects</div>
+    <h2 class="section-heading">Major Collaborative <em>Initiatives</em></h2>
+
+    <div class="projects-grid">
+
+      <!-- CoDeM2 -->
+      <div class="project-card reveal">
+        <div class="project-funder">UM6P · School of Collective Intelligence</div>
+        <div class="project-card-title">CoDeM2 — Cooperation, Demography & Modernity in Morocco & Bolivia</div>
+        <p class="project-card-body">
+          A longitudinal anthropological laboratory co-directed by Dr Alami and Dr Seabright, collecting original data on cooperation, social networks, health behaviours, kinship, and economic change across two field sites undergoing economic transition: Southeast Morocco and lowland Bolivia. The project is designed to generate comparative, theory-driven data on how modernisation reshapes social structures, gender relations, intergroup dynamics, and health outcomes in small-scale communities — bringing the tools of evolutionary anthropology directly to bear on development-relevant questions in the Global South.
+        </p>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <span class="project-meta-label">Co-Directors</span>
+            <span class="project-meta-value">Alami · Seabright</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Field Sites</span>
+            <span class="project-meta-value">Morocco · Bolivia</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Status</span>
+            <span class="project-meta-value">Ongoing</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Based at</span>
+            <span class="project-meta-value">UM6P, Rabat</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tsimane HLHP -->
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-funder">UNM · UC Santa Barbara · Multi-Institutional</div>
+        <div class="project-card-title">Tsimane Health & Life History Project</div>
+        <p class="project-card-body">
+          One of the world's most comprehensive longitudinal studies of human life history, health, and social behaviour. Running continuously since 2002 under the joint directorship of Michael Gurven (UC Santa Barbara) and Hillard Kaplan (University of New Mexico), the project studies the <em>Tsimane</em> — an indigenous forager-horticultural population of approximately 15,000 people in the Beni Department of lowland Bolivia. The project combines biomedical surveillance, economic data, and social network analysis across over 90 villages to understand ageing, reproduction, cooperation, and modernisation. Dr Alami and Dr Seabright are both long-standing members of the project team, having contributed key studies on women's status and child health, cooperative labour networks, social support, and leadership.
+        </p>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <span class="project-meta-label">HERG Members</span>
+            <span class="project-meta-value">Alami · Seabright</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Field Site</span>
+            <span class="project-meta-value">Bolivian Amazon</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Status</span>
+            <span class="project-meta-value">Ongoing</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Website</span>
+            <span class="project-meta-value"><a href="https://tsimane.anth.ucsb.edu/" target="_blank" style="color:var(--accent);text-decoration:none;">tsimane.anth.ucsb.edu</a></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Culture of Schooling -->
+      <div class="project-card reveal">
+        <div class="project-funder">UT Austin · Multi-Institutional</div>
+        <div class="project-card-title">The Culture of Schooling</div>
+        <p class="project-card-body">
+          A large-scale comparative project examining how schools function not merely as sites of academic instruction but as <em>cultural reproduction devices</em> — transmitting values, behavioural norms, and cognitive practices across generations. Led by Cristine H. Legare (UT Austin), the project spans diverse societies across Africa, South America, Asia, and Oceania, and investigates how school quality, structure, and cultural context shape children's cognitive development, executive function, and academic achievement. Dr Erut contributed centrally to the project, including as co-author of the Oxford Handbook of Cultural Evolution chapter on schools as cultural reproduction devices and the large-scale <em>Developmental Science</em> study quantifying school quality across societies.
+        </p>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <span class="project-meta-label">HERG Member</span>
+            <span class="project-meta-value">Alejandro Erut</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Lead Institution</span>
+            <span class="project-meta-value">UT Austin / CACS</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Status</span>
+            <span class="project-meta-value">Ongoing</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Key Output</span>
+            <span class="project-meta-value">Developmental Science, 2023</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Geography of Philosophy -->
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-funder">John Templeton Foundation · Multi-Institutional</div>
+        <div class="project-card-title">The Geography of Philosophy</div>
+        <p class="project-card-body">
+          An unprecedented interdisciplinary, cross-cultural investigation into whether fundamental philosophical concepts — <em>knowledge</em>, <em>wisdom</em>, and <em>understanding</em> — are universal across cultures or vary in meaning and importance. Led by Edouard Machery (Pittsburgh), Stephen Stich (Rutgers), and H. Clark Barrett (UCLA), the project fielded surveys, behavioural games, and qualitative interviews across ten countries and five continents, including Morocco, Ecuador, India, Japan, South Korea, Slovakia, South Africa, China, Peru, and the United States. Dr Erut contributed as a collaborator, leading fieldwork with Shuar-Achuar communities in Ecuador, where research on epistemic norms and concepts of lying revealed culturally unique views on predictions and commitments.
+        </p>
+        <div class="project-meta">
+          <div class="project-meta-item">
+            <span class="project-meta-label">HERG Member</span>
+            <span class="project-meta-value">Alejandro Erut</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Countries</span>
+            <span class="project-meta-value">10 across 5 continents</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Status</span>
+            <span class="project-meta-value">Concluded 2022</span>
+          </div>
+          <div class="project-meta-item">
+            <span class="project-meta-label">Website</span>
+            <span class="project-meta-value"><a href="https://www.geographyofphilosophy.com/" target="_blank" style="color:var(--accent);text-decoration:none;">geographyofphilosophy.com</a></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ PEOPLE ══ -->
+<section id="people">
+  <div class="container">
+    <div class="section-label">The Team</div>
+    <h2 class="section-heading">Principal <em>Investigators</em></h2>
+    <div class="deco-line">✦</div>
+
+    <div class="people-grid">
+
+      <!-- Sarah Alami -->
+      <div class="person-card reveal">
+        <div class="person-avatar person-initials-color-3">SA</div>
+        <div class="person-name">Sarah Alami</div>
+        <div class="person-title">Assistant Professor HDR · Head of Department · School of Collective Intelligence</div>
+        <p class="person-bio">
+          Dr Alami is an evolutionary anthropologist and biodemographer conducting fieldwork with economically transitioning populations in Southeast Morocco and lowland Bolivia. Her research spans kinship, intermarriage, and intergroup relations; women's leadership and cooperation; biodemography and health; and participatory approaches to development. She holds an MA and PhD in Anthropology from UC Santa Barbara and is affiliated with the Tsimane Health and Life History Project.
+        </p>
+        <div class="person-links">
+          <a href="https://www.alamisarah.com/" target="_blank" class="person-link">Website</a>
+          <a href="https://scholar.google.com/citations?user=HlbmffMAAAAJ" target="_blank" class="person-link">Google Scholar</a>
+          <a href="mailto:sarah.alami@um6p.ma" class="person-link">Email</a>
+        </div>
+      </div>
+
+      <!-- Edmond Seabright -->
+      <div class="person-card reveal reveal-delay-1">
+        <div class="person-avatar person-initials-color-2">ES</div>
+        <div class="person-name">Edmond Seabright</div>
+        <div class="person-title">Assistant Professor · School of Collective Intelligence</div>
+        <p class="person-bio">
+          Dr Seabright is an evolutionary anthropologist conducting fieldwork in Bolivia and Morocco. His research focuses on cooperation, politics, leadership, religion, the evolution of human social complexity and hierarchy, health and lifestyle change, and mathematical modelling. He holds a BA in Human Sciences (1st class) from Oxford and an MSc and PhD in Evolutionary Anthropology from the University of New Mexico (2022). He is affiliated with the Tsimane Health and Life History Project and co-directs the CoDeM2 laboratory with Dr Alami.
+        </p>
+        <div class="person-links">
+          <a href="https://edseab.github.io/" target="_blank" class="person-link">Website</a>
+          <a href="https://scholar.google.com/citations?user=1rrFV0sAAAAJ" target="_blank" class="person-link">Google Scholar</a>
+          <a href="mailto:edmond.seabright@um6p.ma" class="person-link">Email</a>
+        </div>
+      </div>
+
+      <!-- Alejandro Erut -->
+      <div class="person-card reveal reveal-delay-2">
+        <div class="person-avatar person-initials-color-1">AE</div>
+        <div class="person-name">Alejandro Erut</div>
+        <div class="person-title">Assistant Professor · School of Collective Intelligence</div>
+        <p class="person-bio">
+          Dr Erut is an anthropologist working across psychology, experimental philosophy, and cognitive science. He specialises in cross-cultural research on conceptual development and child cognition, with extensive fieldwork in Ecuador, Vanuatu, India, and Argentina — primarily with the <em>Shuar</em> and <em>Achuar</em> communities of the Western Amazon. He holds a PhD in Biological Anthropology from UC Los Angeles and was a research fellow at the UT Austin Center for Applied Cognitive Science (2021–2025) before joining UM6P.
+        </p>
+        <div class="person-links">
+          <a href="https://www.alejandroerut.com/" target="_blank" class="person-link">Website</a>
+          <a href="https://scholar.google.com/citations?user=vl_LaeEAAAAJ" target="_blank" class="person-link">Google Scholar</a>
+          <a href="mailto:alejandro.erut@um6p.ma" class="person-link">Email</a>
+        </div>
+      </div>
+
+      <!-- Cody Moser -->
+      <div class="person-card reveal reveal-delay-1">
+        <div class="person-avatar person-initials-color-4">CM</div>
+        <div class="person-name">Cody Moser</div>
+        <div class="person-title">Assistant Professor · School of Collective Intelligence</div>
+        <p class="person-bio">
+          Dr Moser is a complex systems scientist and cultural evolutionist whose work examines the relationship between structure and adaptation in social, biological, economic, and neural systems. His research focuses on how knowledge ecosystems generate, transmit, and lose knowledge — using network theory, agent-based modelling, and large-scale corpus analysis. He holds a PhD in Cognitive and Information Sciences from UC Merced and was previously a visiting graduate fellow at The Music Lab at Harvard University.
+        </p>
+        <div class="person-links">
+          <a href="https://culturologies.co/" target="_blank" class="person-link">Website</a>
+          <a href="https://scholar.google.com/citations?user=G5LKa-IAAAAJ" target="_blank" class="person-link">Google Scholar</a>
+          <a href="mailto:cody.moser@um6p.ma" class="person-link">Email</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ RESEARCH ══ -->
+<section id="research">
+  <div class="container">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-heading">Active Research <em>Programmes</em></h2>
+
+    <div class="research-grid">
+
+      <div class="research-card reveal">
+        <div class="research-num">01</div>
+        <div class="research-card-title">Cross-Cultural Cognition & Conceptual Development</div>
+        <p class="research-card-body">
+          Investigating how children across diverse societies develop conceptual categories, moral intuitions, and epistemic norms — combining methods from anthropology, psychology, and experimental philosophy. Fieldwork spans Ecuador, Vanuatu, India, Morocco, and Argentina.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Cognition</span>
+          <span class="tag">Child Development</span>
+          <span class="tag">Erut</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-1">
+        <div class="research-num">02</div>
+        <div class="research-card-title">Cooperation, Leadership & Social Complexity</div>
+        <p class="research-card-body">
+          Examining the evolution of cooperative behaviour, political leadership, and social hierarchy in small-scale societies. Research integrates field observation, network analysis, and mathematical modelling, with data from Tsimane communities in lowland Bolivia and rural Morocco.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Leadership</span>
+          <span class="tag">Cooperation</span>
+          <span class="tag">Seabright</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal">
+        <div class="research-num">03</div>
+        <div class="research-card-title">Women's Status, Health & Evolutionary Demography</div>
+        <p class="research-card-body">
+          Studying how women's social status shapes health outcomes for themselves and their children. Research uses longitudinal data from Bolivia and Morocco to examine the fitness consequences of female leadership, cooperation networks, and political influence in transitioning societies.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Biodemography</span>
+          <span class="tag">Women's Status</span>
+          <span class="tag">Alami</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-1">
+        <div class="research-num">04</div>
+        <div class="research-card-title">Kinship, Intermarriage & Intergroup Relations</div>
+        <p class="research-card-body">
+          Investigating how intermarriage drives gene flow and cultural exchange, and the consequences of kinship structures for individuals and groups. Research draws on marriage histories, social network data, wealth measures, and attitudes towards ethnic diversity in Southeast Morocco.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Kinship</span>
+          <span class="tag">Cultural Evolution</span>
+          <span class="tag">Alami</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal">
+        <div class="research-num">05</div>
+        <div class="research-card-title">Experimental Philosophy of Lying & Moral Cognition</div>
+        <p class="research-card-body">
+          Examining cross-cultural variation in folk concepts of lying, truth, and deception using experimental methods across dozens of populations. Research with Shuar-Achuar communities has revealed culturally unique epistemic norms regulating predictive speech acts.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Moral Cognition</span>
+          <span class="tag">Experimental Philosophy</span>
+          <span class="tag">Erut</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal reveal-delay-1">
+        <div class="research-num">06</div>
+        <div class="research-card-title">CoDeM2: Longitudinal Field Research in Morocco & Bolivia</div>
+        <p class="research-card-body">
+          A long-running anthropological project co-directed by Alami and Seabright collecting longitudinal data on cooperation, demography, and social change across two populations undergoing economic transitions — bridging evolutionary theory with applied development research.
+        </p>
+        <div class="research-tags">
+          <span class="tag">Longitudinal</span>
+          <span class="tag">Fieldwork</span>
+          <span class="tag">Alami · Seabright</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ PUBLICATIONS ══ -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label">Scholarly Output</div>
+    <h2 class="section-heading">Selected <em>Publications</em></h2>
+
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-title">Are the concepts of truth and lying shared across cultures?</div>
+          <div class="pub-authors">Wiegmann, A., Reins, L., Mizumoto, M., Erut, A., Li, Q., Orr, S. et al.</div>
+          <div class="pub-journal">American Psychologist <a href="https://pubmed.ncbi.nlm.nih.gov/41231564/" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-title">Cross-cultural studies on concepts of lying: methodological approaches and their findings</div>
+          <div class="pub-authors">Erut, A.</div>
+          <div class="pub-journal">Advances in Experimental Philosophy of Lying (pp. 137–168) <a href="#" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-title">Information Architectures: A Framework for Understanding Socio-Technical Systems</div>
+          <div class="pub-authors">Smaldino, P.E., Russell, A., Zefferman, M., … Moser, C. et al.</div>
+          <div class="pub-journal">npj Complexity <a href="https://www.nature.com/articles/s44260-025-00037-z" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2025</div>
+        <div>
+          <div class="pub-title">Myth as Model: Group-Level Interpretive Frameworks</div>
+          <div class="pub-authors">Moser, C.</div>
+          <div class="pub-journal">Behavioral and Brain Sciences <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/abs/myth-as-model-grouplevel-interpretive-frameworks/E0299FD5845F216EBD03DC62B60E0191" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2024</div>
+        <div>
+          <div class="pub-title">Quantifying quality: The impact of measures of school quality on children's academic achievement across diverse societies</div>
+          <div class="pub-authors">Rawlings, B.S., Davis, H.E., Anum, A., Burger, O., Chen, L., … Erut, A., … & Legare, C.H.</div>
+          <div class="pub-journal">Developmental Science <a href="#" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Lying about the future: Shuar-Achuar epistemic norms, predictions, and commitments</div>
+          <div class="pub-authors">Erut, A., Smith, K.M. & Barrett, H.C.</div>
+          <div class="pub-journal">Cognition <a href="https://www.sciencedirect.com/science/article/abs/pii/S0010027723001865" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Innovation-Facilitating Networks Create Inequality</div>
+          <div class="pub-authors">Moser, C. & Smaldino, P.E.</div>
+          <div class="pub-journal">Proceedings of the Royal Society B <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2023.2281" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Maintaining transient diversity is a general principle for improving collective problem solving</div>
+          <div class="pub-authors">Smaldino, P.E., Moser, C., Pérez Velilla, A. & Werling, M.</div>
+          <div class="pub-journal">Perspectives on Psychological Science <a href="https://journals.sagepub.com/doi/full/10.1177/17456916231180100" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2023</div>
+        <div>
+          <div class="pub-title">Aggressive Mimicry and the Evolution of the Human Cognitive Niche</div>
+          <div class="pub-authors">Moser, C., Buckner, W., Sarian, M. & Winking, J.</div>
+          <div class="pub-journal">Human Nature <a href="https://link.springer.com/article/10.1007/s12110-023-09458-y" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">Repercussions of patrilocal residence on mothers' social support networks among Tsimane forager-farmers</div>
+          <div class="pub-authors">Seabright, E., Alami, S. et al.</div>
+          <div class="pub-journal">Philosophical Transactions of the Royal Society B <a href="#" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">Developing cross-cultural data infrastructures (CCDIs) for research in cognitive and behavioral sciences</div>
+          <div class="pub-authors">Burger, O., Chen, L., Erut, A., Fong, F.T.K., Rawlings, B. & Legare, C.H.</div>
+          <div class="pub-journal">Evolutionary Human Sciences <a href="#" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">Acoustic regularities in infant-directed speech and song across cultures</div>
+          <div class="pub-authors">Hilton, C.B., Moser, C.J., Bertolo, M. et al.</div>
+          <div class="pub-journal">Nature Human Behaviour <a href="https://www.nature.com/articles/s41562-022-01410-x" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2022</div>
+        <div>
+          <div class="pub-title">Moral Parochialism and Causal Appraisal of Transgressive Harm in Seoul and Los Angeles</div>
+          <div class="pub-authors">Holbrook, C., Yoon, L., Fessler, D.M.T., Moser, C. et al.</div>
+          <div class="pub-journal">Scientific Reports <a href="https://www.nature.com/articles/s41598-022-18521-0" target="_blank" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2020</div>
+        <div>
+          <div class="pub-title">Mother's social status is associated with child health in a horticulturalist population</div>
+          <div class="pub-authors">Alami, S., von Rueden, C., Seabright, E., Kraft, T., Blackwell, A.D., Stieglitz, J., Kaplan, H. & Gurven, M.</div>
+          <div class="pub-journal">Proceedings of the Royal Society B <a href="#" class="pub-doi">doi →</a></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top: 2.5rem; text-align:center;">
+      <a href="publications.html" style="font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:3px;">View Full Publication List →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-heading">Enquiries &amp; <em>Collaboration</em></h2>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <p>
+          We welcome enquiries from prospective graduate students, postdoctoral researchers, and potential collaborators. The group is based at the <em>School of Collective Intelligence</em>, UM6P, and is co-organising both the <strong>HBES 2026</strong> (Human Behavior and Evolution Society) and <strong>CES 2026</strong> (Cultural Evolution Society) conferences. Please indicate your research interests in your message.
+        </p>
+        <div class="contact-detail">
+          <span class="contact-icon">Address</span>
+          <span class="contact-value">School of Collective Intelligence<br>Université Mohammed VI Polytechnique<br>Rabat, Morocco</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">Email</span>
+          <span class="contact-value">sci@um6p.ma</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">Web</span>
+          <span class="contact-value">sci.um6p.ma</span>
+        </div>
+        <div class="contact-detail">
+          <span class="contact-icon">Conferences</span>
+          <span class="contact-value">HBES 2026 · CES 2026<br><span style="font-size:0.85rem;color:var(--slate);">Human Behavior & Evolution Society · Cultural Evolution Society</span></span>
+        </div>
+      </div>
+
+      <div class="contact-form reveal reveal-delay-1">
+        <!-- ⚠️  Replace YOUR_FORM_ID below with your Formspree form ID -->
+        <!-- Sign up free at formspree.io, create a form, copy the ID from the endpoint URL -->
+        <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="first_name" placeholder="Jane" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="last_name" placeholder="Doe" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="j.doe@university.ac.uk" required>
+          </div>
+          <div class="form-group">
+            <label for="subject">Nature of Enquiry</label>
+            <select id="subject" name="enquiry_type" required>
+              <option value="">— Select —</option>
+              <option>PhD / Graduate Study</option>
+              <option>Postdoctoral Position</option>
+              <option>Research Collaboration</option>
+              <option>Media & Press</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Briefly describe your enquiry or research interests…" required></textarea>
+          </div>
+          <!-- Honeypot spam protection -->
+          <input type="text" name="_gotcha" style="display:none">
+          <button class="btn-submit" type="submit" id="submitBtn">Send Message →</button>
+        </form>
+        <div id="formSuccess" style="display:none;font-family:'Crimson Pro',serif;font-size:1.05rem;font-weight:300;color:#3d4f3e;padding:1.5rem;border:1px solid #3d4f3e;margin-top:1rem;line-height:1.7;">
+          ✓ Thank you — your message has been sent. We will be in touch shortly.
+        </div>
+        <div id="formError" style="display:none;font-family:'Crimson Pro',serif;font-size:1rem;font-weight:300;color:var(--accent);padding:1.5rem;border:1px solid var(--accent);margin-top:1rem;line-height:1.7;">
+          Something went wrong. Please try again or email us directly at sci@um6p.ma.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;align-items:center;gap:0.9rem;">
+      <svg width="36" height="36" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="21" cy="21" r="20" stroke="rgba(245,240,232,0.4)" stroke-width="1.2" fill="none"/>
+        <circle cx="21" cy="21" r="14" stroke="#c8860a" stroke-width="0.7" fill="none" stroke-dasharray="2.5 2.5"/>
+        <path d="M11 22 Q11 10 21 10 Q31 10 31 22" stroke="#f5f0e8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <path d="M11 22 Q11 27 14 28 L28 28 Q31 27 31 22" stroke="#f5f0e8" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <path d="M15 28 Q15 33 21 33 Q27 33 27 28" stroke="#f5f0e8" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <ellipse cx="16.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+        <ellipse cx="25.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+        <circle cx="21" cy="21" r="0.8" fill="#c8860a"/>
+      </svg>
+      <div>
+        <div class="footer-logo">Human Evolution Research Group</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.15em;color:rgba(245,240,232,0.35);text-transform:uppercase;margin-top:2px;">UM6P · School of Collective Intelligence</div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      © 2025 HERG · UM6P, Rabat<br>
+      School of Collective Intelligence
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Smooth nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+
+  // Contact form — Formspree
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const form = document.getElementById('contactForm');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        btn.textContent = 'Send Message →';
+        btn.disabled = false;
+        document.getElementById('formError').style.display = 'block';
+      }
+    } catch {
+      btn.textContent = 'Send Message →';
+      btn.disabled = false;
+      document.getElementById('formError').style.display = 'block';
+    }
+  }
+  // Shuffle people cards on every page load
+  const peopleGrid = document.querySelector('.people-grid');
+  if (peopleGrid) {
+    const cards = Array.from(peopleGrid.children);
+    for (let i = cards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      peopleGrid.appendChild(cards[j]);
+      cards.splice(j, 1);
+    }
+  }
+</script>
+
+<!-- ══ SKULL INTERACTIVITY ══ -->
+<script>
+  const skullParts = document.querySelectorAll('.skull-part');
+  const tooltip = document.getElementById('skullTooltip');
+  const tooltipLabel = document.getElementById('tooltipLabel');
+  const tooltipText = document.getElementById('tooltipText');
+  const heroArt = document.getElementById('heroArt');
+
+  skullParts.forEach(part => {
+    part.addEventListener('mouseenter', function(e) {
+      tooltipLabel.textContent = this.dataset.label;
+      tooltipText.textContent = this.dataset.text;
+      skullParts.forEach(p => { p.style.opacity = '0.15'; p.style.stroke = '#f5f0e8'; });
+      this.style.opacity = '1';
+      this.style.stroke = '#c8860a';
+      tooltip.classList.add('visible');
+      positionTooltip(e);
+    });
+    part.addEventListener('mousemove', positionTooltip);
+    part.addEventListener('mouseleave', function() {
+      skullParts.forEach(p => { p.style.opacity = '0.55'; p.style.stroke = '#f5f0e8'; });
+      tooltip.classList.remove('visible');
+    });
+  });
+
+  function positionTooltip(e) {
+    const rect = heroArt.getBoundingClientRect();
+    let x = e.clientX - rect.left + 16;
+    let y = e.clientY - rect.top - 10;
+    const tipW = 210;
+    if (x + tipW > rect.width) x = e.clientX - rect.left - tipW - 16;
+    if (y < 0) y = 10;
+    tooltip.style.left = x + 'px';
+    tooltip.style.top = y + 'px';
+  }
+
+  // Ring hover interactivity — now SVG elements with pointer-events="stroke"
+  const rings = document.querySelectorAll('.ring-part');
+  const ringTooltip = document.getElementById('ringTooltip');
+  const ringTooltipLabel = document.getElementById('ringTooltipLabel');
+  const ringTooltipBody = document.getElementById('ringTooltipBody');
+  const heroRight = document.querySelector('.hero-right');
+
+  rings.forEach(ring => {
+    ring.addEventListener('mouseenter', function(e) {
+      ringTooltipLabel.textContent = this.dataset.label;
+      ringTooltipBody.textContent = this.dataset.text;
+      ringTooltip.classList.add('visible');
+      positionRingTooltip(e);
+    });
+    ring.addEventListener('mousemove', positionRingTooltip);
+    ring.addEventListener('mouseleave', function() {
+      ringTooltip.classList.remove('visible');
+    });
+  });
+
+  function positionRingTooltip(e) {
+    const rect = heroRight.getBoundingClientRect();
+    let x = e.clientX - rect.left + 16;
+    let y = e.clientY - rect.top - 10;
+    const tipW = 220;
+    if (x + tipW > rect.width) x = e.clientX - rect.left - tipW - 16;
+    if (y < 0) y = 10;
+    ringTooltip.style.left = x + 'px';
+    ringTooltip.style.top = y + 'px';
+  }
+</script>
+
+<!-- ══ LOGO MODAL ══ -->
+<div class="logo-modal-backdrop" id="logoModal" onclick="closeLogoModal(event)">
+  <div class="logo-modal">
+    <button class="logo-modal-close" onclick="document.getElementById('logoModal').classList.remove('open')">Close ✕</button>
+    <div class="logo-modal-inner">
+
+      <!-- Left: large logo display -->
+      <div class="logo-modal-art">
+        <svg width="160" height="160" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="21" cy="21" r="20" stroke="rgba(245,240,232,0.25)" stroke-width="1.2" fill="none"/>
+          <circle cx="21" cy="21" r="14" stroke="#c8860a" stroke-width="0.7" fill="none" stroke-dasharray="2.5 2.5"/>
+          <path d="M11 22 Q11 10 21 10 Q31 10 31 22" stroke="#f5f0e8" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M11 22 Q11 27 14 28 L28 28 Q31 27 31 22" stroke="#f5f0e8" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+          <path d="M15 28 Q15 33 21 33 Q27 33 27 28" stroke="#f5f0e8" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <ellipse cx="16.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+          <ellipse cx="25.5" cy="21" rx="3" ry="2.3" stroke="#b5471b" stroke-width="1" fill="none"/>
+          <circle cx="21" cy="21" r="0.8" fill="#c8860a"/>
+        </svg>
+        <div class="logo-modal-caption">HERG · Logo · 2026</div>
+      </div>
+
+      <!-- Right: explanation -->
+      <div class="logo-modal-text">
+        <div class="logo-modal-eyebrow">About the Mark</div>
+        <h2 class="logo-modal-title">A <em>hominin skull</em>,<br>abstracted</h2>
+
+        <div class="logo-element">
+          <div class="logo-element-icon">
+            <svg width="20" height="20" viewBox="0 0 42 42" fill="none"><path d="M11 22 Q11 10 21 10 Q31 10 31 22" stroke="#c8860a" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div>
+            <div class="logo-element-label">Cranium Dome</div>
+            <div class="logo-element-desc">The rounded braincase of <em>Homo sapiens</em> — the defining morphological trait separating our lineage from earlier hominins.</div>
+          </div>
+        </div>
+
+        <div class="logo-element">
+          <div class="logo-element-icon">
+            <svg width="20" height="20" viewBox="0 0 42 42" fill="none"><ellipse cx="14" cy="21" rx="5" ry="3.5" stroke="#b5471b" stroke-width="1.8" fill="none"/></svg>
+          </div>
+          <div>
+            <div class="logo-element-label">Eye Orbits</div>
+            <div class="logo-element-desc">Drawn in burnt sienna — a primary feature paleoanthropologists study when classifying fossil specimens and reconstructing ancestral faces.</div>
+          </div>
+        </div>
+
+        <div class="logo-element">
+          <div class="logo-element-icon">
+            <svg width="20" height="20" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="5" fill="#c8860a" opacity="0.8"/></svg>
+          </div>
+          <div>
+            <div class="logo-element-label">Nasion Point</div>
+            <div class="logo-element-desc">The central dot marks the nasion — a standard cranial landmark used in craniometric analysis and fossil measurement.</div>
+          </div>
+        </div>
+
+        <div class="logo-element">
+          <div class="logo-element-icon">
+            <svg width="20" height="20" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="10" stroke="#c8860a" stroke-width="1" fill="none" stroke-dasharray="2 2"/></svg>
+          </div>
+          <div>
+            <div class="logo-element-label">Orbit Ring</div>
+            <div class="logo-element-desc">The dashed inner ring suggests evolutionary time — cyclical, long-scale processes — and gives the mark a diagrammatic, field-notebook quality.</div>
+          </div>
+        </div>
+
+        <div class="logo-element">
+          <div class="logo-element-icon">
+            <svg width="20" height="20" viewBox="0 0 42 42" fill="none"><circle cx="21" cy="21" r="13" stroke="rgba(44,31,15,0.4)" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div>
+            <div class="logo-element-label">Outer Circle & Palette</div>
+            <div class="logo-element-desc">The frame makes the mark work as a badge. The umber, sienna, and ochre tones reference fossil bone, excavation soil, and aged parchment.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openLogoModal() {
+    document.getElementById('logoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLogoModal(e) {
+    if (e.target === document.getElementById('logoModal')) {
+      document.getElementById('logoModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('logoModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+<!-- ══ COOKIE NOTICE ══ -->
+<div id="cookieBanner" style="
+  display:none;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  z-index:9000;
+  background:var(--deep);
+  border-top:2px solid var(--ochre);
+  padding:1.2rem 4rem;
+  display:flex;
+  align-items:center;
+  gap:2rem;
+  flex-wrap:wrap;
+">
+  <p style="font-family:'Crimson Pro',serif;font-size:0.92rem;font-weight:300;color:rgba(245,240,232,0.75);flex:1;min-width:260px;line-height:1.6;margin:0;">
+    This site does not use tracking cookies or third-party analytics. We use only essential session functionality. By continuing to use this site you acknowledge our
+    <a href="#" style="color:var(--ochre);text-decoration:underline;" onclick="showPrivacy(event)">privacy notice</a>.
+  </p>
+  <div style="display:flex;gap:0.8rem;flex-shrink:0;">
+    <button onclick="acceptCookies()" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;background:var(--ochre);color:var(--deep);border:none;padding:0.6rem 1.4rem;cursor:pointer;font-weight:600;">Accept</button>
+    <button onclick="dismissCookies()" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;background:transparent;color:rgba(245,240,232,0.5);border:1px solid rgba(245,240,232,0.2);padding:0.6rem 1.4rem;cursor:pointer;">Dismiss</button>
+  </div>
+</div>
+
+<!-- Privacy Modal -->
+<div id="privacyModal" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(26,18,8,0.8);backdrop-filter:blur(4px);align-items:center;justify-content:center;">
+  <div style="background:var(--parchment);max-width:580px;width:90%;max-height:80vh;overflow-y:auto;padding:3rem;position:relative;border-top:3px solid var(--ochre);">
+    <button onclick="document.getElementById('privacyModal').style.display='none'" style="position:absolute;top:1rem;right:1rem;font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;background:none;border:1px solid var(--light-line);color:var(--slate);padding:0.35rem 0.7rem;cursor:pointer;">Close ✕</button>
+    <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;">Privacy Notice</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--deep);margin-bottom:1.5rem;">How we handle <em style="font-style:italic;color:var(--sienna);">your data</em></h2>
+    <div style="font-family:'Crimson Pro',serif;font-size:0.97rem;font-weight:300;color:var(--slate);line-height:1.8;">
+      <p style="margin-bottom:1rem;"><strong style="color:var(--umber);">No tracking.</strong> This website does not use Google Analytics, advertising cookies, or any third-party tracking technology.</p>
+      <p style="margin-bottom:1rem;"><strong style="color:var(--umber);">Contact form.</strong> If you submit the contact form, your name, email address, and message are sent via Formspree (formspree.io) to the HERG team. We use this information solely to respond to your enquiry. We do not share it with any third party.</p>
+      <p style="margin-bottom:1rem;"><strong style="color:var(--umber);">Fonts.</strong> This site loads fonts from Google Fonts. Google may log your IP address as part of this request, subject to Google's own privacy policy.</p>
+      <p style="margin-bottom:1rem;"><strong style="color:var(--umber);">Your rights.</strong> Under GDPR and applicable Moroccan data protection law, you have the right to access, correct, or request deletion of any personal data we hold. Contact us at sci@um6p.ma.</p>
+      <p style="margin-bottom:0;"><strong style="color:var(--umber);">Last updated:</strong> 2026.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Cookie banner logic
+  function showCookieBanner() {
+    if (!localStorage.getItem('herg_cookie_consent')) {
+      document.getElementById('cookieBanner').style.display = 'flex';
+    }
+  }
+  function acceptCookies() {
+    localStorage.setItem('herg_cookie_consent', 'accepted');
+    document.getElementById('cookieBanner').style.display = 'none';
+  }
+  function dismissCookies() {
+    localStorage.setItem('herg_cookie_consent', 'dismissed');
+    document.getElementById('cookieBanner').style.display = 'none';
+  }
+  function showPrivacy(e) {
+    e.preventDefault();
+    document.getElementById('privacyModal').style.display = 'flex';
+  }
+  window.addEventListener('load', showCookieBanner);
+</script>
+
+</body>
+</html>

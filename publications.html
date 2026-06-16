@@ -8,442 +8,112 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bone: #f5f0e8;
-    --parchment: #ede6d4;
-    --umber: #2c1f0f;
-    --sienna: #8b4513;
-    --ochre: #c8860a;
-    --slate: #4a5568;
-    --deep: #1a1208;
-    --accent: #b5471b;
-    --light-line: rgba(44,31,15,0.12);
+    --bone: #f5f0e8; --parchment: #ede6d4; --umber: #2c1f0f;
+    --sienna: #8b4513; --ochre: #c8860a; --slate: #4a5568;
+    --deep: #1a1208; --accent: #b5471b; --light-line: rgba(44,31,15,0.12);
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bone);
-    color: var(--umber);
-    font-family: 'Crimson Pro', Georgia, serif;
-    font-size: 18px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.6;
-  }
+  body { background: var(--bone); color: var(--umber); font-family: 'Crimson Pro', Georgia, serif; font-size: 18px; line-height: 1.7; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.6; }
 
   /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.2rem 4rem;
-    background: rgba(245,240,232,0.92);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--light-line);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--umber);
-    text-decoration: none;
-    position: relative;
-    padding-bottom: 2px;
-    transition: color 0.25s;
-  }
-
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 1px;
-    background: var(--accent);
-    transition: width 0.3s ease;
-  }
-
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(245,240,232,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--light-line); }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--umber); text-decoration: none; position: relative; padding-bottom: 2px; transition: color 0.25s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--accent); transition: width 0.3s ease; }
   .nav-links a:hover { color: var(--accent); }
-  .nav-links a:hover::after { width: 100%; }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
   .nav-links a.active { color: var(--accent); }
-  .nav-links a.active::after { width: 100%; }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 110; }
+  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--umber); transition: all 0.3s ease; transform-origin: center; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .mobile-menu { display: none; position: fixed; inset: 0; background: var(--bone); z-index: 105; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; opacity: 0; transition: opacity 0.3s ease; }
+  .mobile-menu.open { display: flex; opacity: 1; }
+  .mobile-menu a { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--deep); text-decoration: none; transition: color 0.2s; }
+  .mobile-menu a:hover { color: var(--accent); }
+  .mobile-menu-divider { width: 40px; height: 1px; background: var(--light-line); }
 
   /* PAGE HEADER */
-  .page-header {
-    background: var(--umber);
-    padding: 10rem 0 5rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .page-header::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 80% 50%, rgba(200,134,10,0.08), transparent 60%);
-    pointer-events: none;
-  }
-
-  .page-header .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 4rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .page-eyebrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--ochre);
-    margin-bottom: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .page-eyebrow::before {
-    content: '';
-    display: block;
-    width: 28px; height: 1px;
-    background: var(--ochre);
-  }
-
-  .page-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    font-weight: 900;
-    color: var(--bone);
-    line-height: 1.05;
-    margin-bottom: 1.2rem;
-  }
-
+  .page-header { background: var(--umber); padding: 10rem 0 5rem; position: relative; overflow: hidden; }
+  .page-header::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(200,134,10,0.08), transparent 60%); pointer-events: none; }
+  .page-header .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; position: relative; z-index: 1; }
+  .page-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ochre); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
+  .page-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--ochre); }
+  .page-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; color: var(--bone); line-height: 1.05; margin-bottom: 1.2rem; }
   .page-title em { font-style: italic; color: var(--ochre); }
-
-  .page-subtitle {
-    font-family: 'Crimson Pro', serif;
-    font-size: 1.05rem;
-    font-weight: 300;
-    color: rgba(245,240,232,0.6);
-    max-width: 55ch;
-    line-height: 1.8;
-  }
-
-  .page-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.5);
-    text-decoration: none;
-    margin-top: 2.5rem;
-    transition: color 0.25s;
-  }
+  .page-subtitle { font-family: 'Crimson Pro', serif; font-size: 1.05rem; font-weight: 300; color: rgba(245,240,232,0.6); max-width: 55ch; line-height: 1.8; }
+  .page-back { display: inline-flex; align-items: center; gap: 0.6rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,240,232,0.5); text-decoration: none; margin-top: 2.5rem; transition: color 0.25s; }
   .page-back:hover { color: var(--ochre); }
 
-  .search-wrap {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-right: 1.5rem;
-    border: 1px solid var(--light-line);
-    border-bottom: 2px solid var(--umber);
-    background: var(--bone);
-    transition: border-bottom-color 0.25s;
-  }
-  .search-wrap:focus-within {
-    border-bottom-color: var(--accent);
-  }
+  /* FILTER BAR */
+  .filter-bar { background: var(--parchment); border-bottom: 1px solid var(--light-line); padding: 1.5rem 0; position: sticky; top: 66px; z-index: 50; }
+  .filter-inner { max-width: 1200px; margin: 0 auto; padding: 0 4rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .filter-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--slate); margin-right: 0.5rem; }
+  .filter-btn { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--umber); background: transparent; border: 1px solid var(--light-line); padding: 0.4rem 0.9rem; cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { background: var(--umber); color: var(--bone); border-color: var(--umber); }
+  .filter-count { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; color: var(--slate); margin-left: auto; }
 
-  .search-icon {
-    padding: 0 0.7rem;
-    color: var(--slate);
-    font-size: 0.8rem;
-    pointer-events: none;
-  }
-
-  #pubSearch {
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.95rem;
-    color: var(--umber);
-    background: transparent;
-    border: none;
-    outline: none;
-    padding: 0.45rem 0.6rem 0.45rem 0;
-    width: 200px;
-  }
-
-  #pubSearch::placeholder {
-    font-style: italic;
-    color: var(--slate);
-    opacity: 0.6;
-  }
-
-  .search-clear {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--slate);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0 0.6rem;
-    display: none;
-    transition: color 0.2s;
-  }
+  /* SEARCH */
+  .search-wrap { display: flex; align-items: center; gap: 0; margin-right: 1.5rem; border: 1px solid var(--light-line); border-bottom: 2px solid var(--umber); background: var(--bone); transition: border-bottom-color 0.25s; }
+  .search-wrap:focus-within { border-bottom-color: var(--accent); }
+  .search-icon { padding: 0 0.7rem; color: var(--slate); font-size: 0.8rem; pointer-events: none; }
+  #pubSearch { font-family: 'Crimson Pro', serif; font-size: 0.95rem; color: var(--umber); background: transparent; border: none; outline: none; padding: 0.45rem 0.6rem 0.45rem 0; width: 200px; }
+  #pubSearch::placeholder { font-style: italic; color: var(--slate); opacity: 0.6; }
+  .search-clear { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--slate); background: none; border: none; cursor: pointer; padding: 0 0.6rem; display: none; transition: color 0.2s; }
   .search-clear:hover { color: var(--accent); }
   .search-clear.visible { display: block; }
-
-  .no-results {
-    display: none;
-    font-family: 'Crimson Pro', serif;
-    font-size: 1.1rem;
-    font-style: italic;
-    color: var(--slate);
-    padding: 3rem 0;
-    text-align: center;
-  }
+  .no-results { display: none; font-family: 'Crimson Pro', serif; font-size: 1.1rem; font-style: italic; color: var(--slate); padding: 3rem 0; text-align: center; }
   .no-results.visible { display: block; }
 
-  /* FILTER BAR */
-  .filter-bar {
-    background: var(--parchment);
-    border-bottom: 1px solid var(--light-line);
-    padding: 1.5rem 0;
-    position: sticky;
-    top: 66px;
-    z-index: 50;
-  }
-
-  .filter-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 4rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--slate);
-    margin-right: 0.5rem;
-  }
-
-  .filter-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--umber);
-    background: transparent;
-    border: 1px solid var(--light-line);
-    padding: 0.4rem 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .filter-btn:hover,
-  .filter-btn.active {
-    background: var(--umber);
-    color: var(--bone);
-    border-color: var(--umber);
-  }
-
-  .filter-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.12em;
-    color: var(--slate);
-    margin-left: auto;
-  }
-
-  /* MAIN CONTENT */
-  main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 5rem 4rem 8rem;
-  }
-
-  /* YEAR GROUP */
-  .year-group {
-    margin-bottom: 4rem;
-  }
-
-  .year-heading {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5rem;
-    font-weight: 900;
-    font-style: italic;
-    color: rgba(44,31,15,0.1);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--light-line);
-    padding-bottom: 1rem;
-  }
+  /* MAIN */
+  main { max-width: 1200px; margin: 0 auto; padding: 5rem 4rem 8rem; }
+  .year-group { margin-bottom: 4rem; }
+  .year-heading { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; font-style: italic; color: rgba(44,31,15,0.1); line-height: 1; margin-bottom: 0.5rem; border-bottom: 1px solid var(--light-line); padding-bottom: 1rem; }
 
   /* PUB ITEM */
-  .pub-item {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 2rem;
-    padding: 2rem 0;
-    border-bottom: 1px solid var(--light-line);
-    align-items: start;
-    transition: opacity 0.3s;
-  }
-
+  .pub-item { display: grid; grid-template-columns: 80px 1fr; gap: 2rem; padding: 2rem 0; border-bottom: 1px solid var(--light-line); align-items: start; }
   .pub-item.hidden { display: none; }
-
-  .pub-year {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    padding-top: 0.3rem;
-  }
-
-  .pub-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.08rem;
-    font-weight: 700;
-    color: var(--deep);
-    margin-bottom: 0.4rem;
-    line-height: 1.3;
-  }
-
-  .pub-authors {
-    font-family: 'Crimson Pro', serif;
-    font-size: 0.92rem;
-    font-style: italic;
-    color: var(--slate);
-    margin-bottom: 0.35rem;
-  }
-
-  .pub-authors strong {
-    font-style: normal;
-    font-weight: 600;
-    color: var(--umber);
-  }
-
-  .pub-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .pub-journal {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ochre);
-  }
-
-  .pub-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    border: 1px solid rgba(181,71,27,0.25);
-    padding: 0.15rem 0.5rem;
-  }
-
-  .pub-doi {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--accent);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-    margin-left: auto;
-  }
+  .pub-year { font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--accent); padding-top: 0.3rem; }
+  .pub-title { font-family: 'Playfair Display', serif; font-size: 1.08rem; font-weight: 700; color: var(--deep); margin-bottom: 0.4rem; line-height: 1.3; }
+  .pub-authors { font-family: 'Crimson Pro', serif; font-size: 0.92rem; font-style: italic; color: var(--slate); margin-bottom: 0.35rem; }
+  .pub-authors strong { font-style: normal; font-weight: 600; color: var(--umber); }
+  .pub-meta { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .pub-journal { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ochre); }
+  .pub-tag { font-family: 'DM Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(181,71,27,0.25); padding: 0.15rem 0.5rem; }
+  .pub-tag.preprint { color: var(--slate); border-color: rgba(74,85,104,0.3); }
+  .pub-doi { font-family: 'DM Mono', monospace; font-size: 0.6rem; color: var(--accent); text-decoration: none; opacity: 0.7; transition: opacity 0.2s; margin-left: auto; }
   .pub-doi:hover { opacity: 1; }
 
   /* FOOTER */
-  footer {
-    background: var(--deep);
-    color: rgba(245,240,232,0.5);
-    padding: 3rem 0;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 4rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.9rem;
-    color: var(--bone);
-    font-weight: 700;
-  }
-
-  .footer-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-align: right;
-  }
+  footer { background: var(--deep); color: rgba(245,240,232,0.5); padding: 3rem 0; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 4rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--bone); font-weight: 700; }
+  .footer-meta { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; text-align: right; }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
-    nav { padding: 1rem 2rem; }
-    .nav-links { gap: 1.2rem; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
     .page-header .container, main, .filter-inner, .footer-inner { padding-left: 2rem; padding-right: 2rem; }
-    .pub-item { grid-template-columns: 60px 1fr; gap: 1rem; }
+    .pub-item { grid-template-columns: 50px 1fr; gap: 1rem; }
     .filter-bar { top: 58px; }
+    #pubSearch { width: 140px; }
+    .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-meta { text-align: center; }
   }
 
-  /* SCROLL REVEAL */
+  /* REVEAL */
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .reveal.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <a href="index.html" class="nav-logo">
     <svg width="38" height="38" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -469,19 +139,34 @@
     <li><a href="publications.html" class="active">Publications</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- PAGE HEADER -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about" onclick="closeMenu()">About</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="index.html#people" onclick="closeMenu()">People</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="index.html#research" onclick="closeMenu()">Research</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="index.html#projects" onclick="closeMenu()">Projects</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="publications.html" onclick="closeMenu()">Publications</a>
+  <div class="mobile-menu-divider"></div>
+  <a href="index.html#contact" onclick="closeMenu()">Contact</a>
+</div>
+
 <div class="page-header">
   <div class="container">
     <div class="page-eyebrow">Scholarly Output</div>
     <h1 class="page-title">Full <em>Publications</em></h1>
-    <p class="page-subtitle">Complete list of publications by members of the Human Evolution Research Group at UM6P's School of Collective Intelligence, Rabat.</p>
+    <p class="page-subtitle">Complete list of publications by HERG members at UM6P's School of Collective Intelligence, Rabat.</p>
     <a href="index.html" class="page-back">← Back to main site</a>
   </div>
 </div>
 
-<!-- FILTER BAR -->
 <div class="filter-bar">
   <div class="filter-inner">
     <div class="search-wrap">
@@ -495,285 +180,677 @@
     <button class="filter-btn" onclick="filter('seabright', this)">Seabright</button>
     <button class="filter-btn" onclick="filter('erut', this)">Erut</button>
     <button class="filter-btn" onclick="filter('moser', this)">Moser</button>
-    <span class="filter-count" id="filter-count">14 publications</span>
+    <span class="filter-count" id="filter-count">63 publications</span>
   </div>
 </div>
 
-<!-- NO RESULTS -->
 <div class="no-results" id="noResults">No publications match your search.</div>
 
-<!-- PUBLICATIONS -->
 <main>
 
-  <!-- 2025 -->
-  <div class="year-group">
-    <div class="year-heading">2025</div>
+<!-- ══ 2026 ══ -->
+<div class="year-group">
+  <div class="year-heading">2026</div>
 
-    <div class="pub-item reveal" data-authors="erut">
-      <div class="pub-year">2025</div>
-      <div>
-        <div class="pub-title">Are the concepts of truth and lying shared across cultures?</div>
-        <div class="pub-authors">Wiegmann, A., Reins, L., Mizumoto, M., <strong>Erut, A.</strong>, Li, Q., Orr, S. et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">American Psychologist</span>
-          <span class="pub-tag">Erut</span>
-          <a href="https://pubmed.ncbi.nlm.nih.gov/41231564/" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="erut">
-      <div class="pub-year">2025</div>
-      <div>
-        <div class="pub-title">Cross-cultural studies on concepts of lying: methodological approaches and their findings</div>
-        <div class="pub-authors"><strong>Erut, A.</strong></div>
-        <div class="pub-meta">
-          <span class="pub-journal">Advances in Experimental Philosophy of Lying (pp. 137–168)</span>
-          <span class="pub-tag">Erut</span>
-          <a href="#" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2025</div>
-      <div>
-        <div class="pub-title">Information Architectures: A Framework for Understanding Socio-Technical Systems</div>
-        <div class="pub-authors">Smaldino, P.E., Russell, A., Zefferman, M., … <strong>Moser, C.</strong> et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">npj Complexity</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.nature.com/articles/s44260-025-00037-z" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2025</div>
-      <div>
-        <div class="pub-title">Myth as Model: Group-Level Interpretive Frameworks</div>
-        <div class="pub-authors"><strong>Moser, C.</strong></div>
-        <div class="pub-meta">
-          <span class="pub-journal">Behavioral and Brain Sciences</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/abs/myth-as-model-grouplevel-interpretive-frameworks/E0299FD5845F216EBD03DC62B60E0191" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
+  <div class="pub-item reveal" data-authors="seabright alami">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">The evolutionary past and future of collective intelligence: introduction to the theme issue</div>
+      <div class="pub-authors"><strong>Seabright, E.</strong>, <strong>Alami, S.</strong>, Borgerhoff Mulder, M., Whiten, A. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Philosophical Transactions B</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span></div>
     </div>
   </div>
 
-  <!-- 2024 -->
-  <div class="year-group">
-    <div class="year-heading">2024</div>
-
-    <div class="pub-item reveal" data-authors="erut">
-      <div class="pub-year">2024</div>
-      <div>
-        <div class="pub-title">Quantifying quality: The impact of measures of school quality on children's academic achievement across diverse societies</div>
-        <div class="pub-authors">Rawlings, B.S., Davis, H.E., Anum, A., Burger, O., Chen, L., … <strong>Erut, A.</strong>, … & Legare, C.H.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Developmental Science</span>
-          <span class="pub-tag">Erut</span>
-          <a href="https://doi.org/10.1111/desc.13434" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">Knowledge in the Upper Amazon: Indigenous Voices from Urarina, Shuar, and Shiwiar Communities</div>
+      <div class="pub-authors">Arahuate Manizari, M., Caringkia, J., Gualinga Chuji, J., Tsetsekip Santi, M., Homan, J., Fabiano, E., & <strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Southern Epistemologies · HAU Press · Forthcoming</span><span class="pub-tag">Erut</span></div>
     </div>
   </div>
 
-  <!-- 2023 -->
-  <div class="year-group">
-    <div class="year-heading">2023</div>
 
-    <div class="pub-item reveal" data-authors="erut">
-      <div class="pub-year">2023</div>
-      <div>
-        <div class="pub-title">Lying about the future: Shuar-Achuar epistemic norms, predictions, and commitments</div>
-        <div class="pub-authors"><strong>Erut, A.</strong>, Smith, K.M. & Barrett, H.C.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Cognition</span>
-          <span class="pub-tag">Erut</span>
-          <a href="https://www.sciencedirect.com/science/article/abs/pii/S0010027723001865" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2023</div>
-      <div>
-        <div class="pub-title">Innovation-Facilitating Networks Create Inequality</div>
-        <div class="pub-authors"><strong>Moser, C.</strong> & Smaldino, P.E.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Proceedings of the Royal Society B</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://royalsocietypublishing.org/doi/10.1098/rspb.2023.2281" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2023</div>
-      <div>
-        <div class="pub-title">Maintaining transient diversity is a general principle for improving collective problem solving</div>
-        <div class="pub-authors">Smaldino, P.E., <strong>Moser, C.</strong>, Pérez Velilla, A. & Werling, M.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Perspectives on Psychological Science</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://journals.sagepub.com/doi/full/10.1177/17456916231180100" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2023</div>
-      <div>
-        <div class="pub-title">Aggressive Mimicry and the Evolution of the Human Cognitive Niche</div>
-        <div class="pub-authors"><strong>Moser, C.</strong>, Buckner, W., Sarian, M. & Winking, J.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Human Nature</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://link.springer.com/article/10.1007/s12110-023-09458-y" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2023</div>
-      <div>
-        <div class="pub-title">All Intelligence is Collective Intelligence</div>
-        <div class="pub-authors">Falandays, J.B., Kaaronen, R.O., <strong>Moser, C.J.</strong>, Rorot, W. et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Journal of Multiscale Neuroscience</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.neuralpress.org/_files/ugd/1dd990_f5fc8a4eef6142b48e387daa9c4454e7.pdf" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
+      <div class="pub-authors"><strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Forthcoming volume</span><span class="pub-tag">Erut</span></div>
     </div>
   </div>
 
-  <!-- 2022 -->
-  <div class="year-group">
-    <div class="year-heading">2022</div>
-
-    <div class="pub-item reveal" data-authors="seabright alami">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Repercussions of patrilocal residence on mothers' social support networks among Tsimane forager-farmers</div>
-        <div class="pub-authors"><strong>Seabright, E.</strong>, <strong>Alami, S.</strong> et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Philosophical Transactions of the Royal Society B</span>
-          <span class="pub-tag">Seabright</span>
-          <span class="pub-tag">Alami</span>
-          <a href="#" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="erut">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Developing cross-cultural data infrastructures (CCDIs) for research in cognitive and behavioral sciences</div>
-        <div class="pub-authors">Burger, O., Chen, L., <strong>Erut, A.</strong>, Fong, F.T.K., Rawlings, B. & Legare, C.H.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Evolutionary Human Sciences</span>
-          <span class="pub-tag">Erut</span>
-          <a href="#" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Acoustic regularities in infant-directed speech and song across cultures</div>
-        <div class="pub-authors">Hilton, C.B., <strong>Moser, C.J.</strong>, Bertolo, M. et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Nature Human Behaviour</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.nature.com/articles/s41562-022-01410-x" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Moral Parochialism and Causal Appraisal of Transgressive Harm in Seoul and Los Angeles</div>
-        <div class="pub-authors">Holbrook, C., Yoon, L., Fessler, D.M.T., <strong>Moser, C.</strong> et al.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Scientific Reports</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.nature.com/articles/s41598-022-18521-0" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Organizational Development as Generative Entrenchment</div>
-        <div class="pub-authors"><strong>Moser, C.</strong> & Smaldino, P.E.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Entropy</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.mdpi.com/1099-4300/24/7/879" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2022</div>
-      <div>
-        <div class="pub-title">Hidden Clusters Beyond Ethnic Boundaries</div>
-        <div class="pub-authors">Pérez Velilla, A., <strong>Moser, C.</strong>, Smaldino, P.E.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Behavioral and Brain Sciences</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/hidden-clusters-beyond-ethnic-boundaries/08DDF60846E92FDC3303D21F238856D8" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">Locals know more than it seems: a new method for revealing collective understanding, tested in three African communities</div>
+      <div class="pub-authors">el Aissati, T., Goubraim, G., <strong>Erut, A.</strong>, O Madagain, C. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Philosophical Transactions B</span><span class="pub-tag">Erut</span></div>
     </div>
   </div>
 
-  <!-- 2021 -->
-  <div class="year-group">
-    <div class="year-heading">2021</div>
-
-    <div class="pub-item reveal" data-authors="moser">
-      <div class="pub-year">2021</div>
-      <div>
-        <div class="pub-title">Why don't cockatoos have war songs?</div>
-        <div class="pub-authors"><strong>Moser, C.</strong>, Ackerman, J., Dayer, A., Proksch, S. & Smaldino, P.E.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Behavioral and Brain Sciences</span>
-          <span class="pub-tag">Moser</span>
-          <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/abs/why-dont-cockatoos-have-war-songs/C16439F0B3AA0E5601E74DDFDBCDC175" target="_blank" class="pub-doi">doi →</a>
-        </div>
-      </div>
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">Latent Profile Analyses of Explanations About the Origins of SARS-CoV-2 Within and Across Countries</div>
+      <div class="pub-authors">Peregrino, J.D., Kertesz, A.F., Lunkenheimer, H., <strong>Erut, A.</strong>, Legare, C.H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Collabra: Psychology</span><span class="pub-tag">Erut</span></div>
     </div>
   </div>
 
-  <!-- 2020 -->
-  <div class="year-group">
-    <div class="year-heading">2020</div>
-
-    <div class="pub-item reveal" data-authors="alami seabright">
-      <div class="pub-year">2020</div>
-      <div>
-        <div class="pub-title">Mother's social status is associated with child health in a horticulturalist population</div>
-        <div class="pub-authors"><strong>Alami, S.</strong>, von Rueden, C., <strong>Seabright, E.</strong>, Kraft, T., Blackwell, A.D., Stieglitz, J., Kaplan, H. & Gurven, M.</div>
-        <div class="pub-meta">
-          <span class="pub-journal">Proceedings of the Royal Society B</span>
-          <span class="pub-tag">Alami</span>
-          <span class="pub-tag">Seabright</span>
-          <a href="#" class="pub-doi">doi →</a>
-        </div>
-      </div>
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">Collective Intelligence as Collective Information Processing</div>
+      <div class="pub-authors">Anwarzai, Z., <strong>Moser, C.</strong>, Dromiack, H., Garg, K., Ramos-Fernandez, G.</div>
+      <div class="pub-meta"><span class="pub-journal">Cognition · vol. 270</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1016/j.cognition.2025.106433" target="_blank" class="pub-doi">doi →</a></div>
     </div>
   </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2026</div>
+    <div>
+      <div class="pub-title">Segmentation and morphometry of intracranial internal carotid artery calcification in relation to brain atrophy</div>
+      <div class="pub-authors">Xu, X., Chaudhari, N.N., Imms, P., <strong>Seabright, E.</strong>, Irimia, A. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Neuroradiology</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2025 ══ -->
+<div class="year-group">
+  <div class="year-heading">2025</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Are the Concepts of Truth and Lying Shared Across Cultures?</div>
+      <div class="pub-authors">Wiegmann, A., Reins, L.M., Mizumoto, M., <strong>Erut, A.</strong>, Orr, S. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">American Psychologist</span><span class="pub-tag">Erut</span><a href="https://pubmed.ncbi.nlm.nih.gov/41231564/" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Cross-cultural Studies on Concepts of Lying: Methodological Approaches and Their Findings</div>
+      <div class="pub-authors"><strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Lying, Fake News, and Bullshit · Bloomsbury</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Ethnic identity in the framework of institutional dynamics: An evolutionary perspective</div>
+      <div class="pub-authors"><strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Culture, Identity, and Essentialism in Intergroup Relations · Springer-Nature</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">The Ritualization of Complex Skill Acquisition: Cultural Transmission of Mastery of Indian Miniature Paintings</div>
+      <div class="pub-authors">Hashmi, F.A., <strong>Erut, A.</strong>, Taylor, Z.M., Legare, C.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the Annual Meeting of the Cognitive Science Society · vol. 47</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">The role of implicit content for lie and truth judgments: A cross-cultural study</div>
+      <div class="pub-authors">Reins, L., Mizumoto, M., <strong>Erut, A.</strong>, Li, Q., Wiegmann, A.</div>
+      <div class="pub-meta"><span class="pub-journal">American Psychologist</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+
+      <div class="pub-authors">Smaldino, P.E., Russell, A., Zefferman, M., … <strong>Moser, C.</strong> et al.</div>
+      <div class="pub-meta"><span class="pub-journal">npj Complexity · vol. 2</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1038/s44260-025-00037-z" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Myth as Model: Group-Level Interpretive Frameworks</div>
+      <div class="pub-authors"><strong>Moser, C.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Behavioral and Brain Sciences · vol. 47</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1017/S0140525X24000827" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Limit Cycles in Opinion Dynamic Networks with Competing Stubborn Agents</div>
+      <div class="pub-authors"><strong>Moser, C.</strong> & Smaldino, P.E.</div>
+      <div class="pub-meta"><span class="pub-journal">SocArXiv Preprint</span><span class="pub-tag">Moser</span><span class="pub-tag preprint">Preprint</span><a href="https://osf.io/preprints/socarxiv/nqbdt_v1" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">The causal role of synergy in collective problem-solving</div>
+      <div class="pub-authors">Garg, K., <strong>Moser, C.</strong>, Dromiack, H., Anwarzai, Z., Ramos-Fernandez, G.</div>
+      <div class="pub-meta"><span class="pub-journal">Preprint</span><span class="pub-tag">Moser</span><span class="pub-tag preprint">Preprint</span><a href="https://osf.io/6r2h5_v2" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Network structure explains intellectual discourse across human history</div>
+      <div class="pub-authors"><strong>Moser, C.</strong>, Ortega, A., Marghetis, T.</div>
+      <div class="pub-meta"><span class="pub-journal">PsyArXiv Preprint</span><span class="pub-tag">Moser</span><span class="pub-tag preprint">Preprint</span><a href="https://osf.io/preprints/psyarxiv/ep3ub_v1" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Ectopic Adipose Tissue in Subsistence Populations with Minimal Coronary Disease, Large Left Atria, and Very Low Rates of Atrial Fibrillation</div>
+      <div class="pub-authors">Thompson, R.C., Trumble, B., Cummings, D.K., <strong>Seabright, E.</strong>, Kaplan, H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">American Journal of Preventive Cardiology</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2025</div>
+    <div>
+      <div class="pub-title">Physical activity mediates age differences in cognition among Tsimane forager-horticulturalists</div>
+      <div class="pub-authors">Imms, P., Chaudhari, N.N., Cummings, D., <strong>Seabright, E.</strong>, Irimia, A. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Journals of Gerontology Series A</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2024 ══ -->
+<div class="year-group">
+  <div class="year-heading">2024</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2024</div>
+    <div>
+      <div class="pub-title">Commentary on "Magic and Empiricism in Early Chinese Rainmaking"</div>
+      <div class="pub-authors"><strong>Erut, A.</strong> & Legare, C.H.</div>
+      <div class="pub-meta"><span class="pub-journal">Current Anthropology</span><span class="pub-tag">Erut</span><a href="https://doi.org/10.1086/729118" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+
+      <div class="pub-authors">Fong, F.T.K., <strong>Erut, A.</strong>, Legare, C.H.</div>
+      <div class="pub-meta"><span class="pub-journal">Oxford Handbook of Cultural Learning</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2024</div>
+    <div>
+      <div class="pub-title">The role of implicit content for lie and truth judgments: A cross-cultural study</div>
+      <div class="pub-authors">Wiegmann, A., Reins, L.M., Mizumoto, M., <strong>Erut, A.</strong>, Orr, S. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Preprint</span><span class="pub-tag">Erut</span><span class="pub-tag preprint">Preprint</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2024</div>
+    <div>
+      <div class="pub-title">Increases in regional brain volume across two native South American male populations</div>
+      <div class="pub-authors">Chaudhari, N.N., Imms, P., Chowdhury, N.F., <strong>Alami, S.</strong>, <strong>Seabright, E.</strong>, Irimia, A. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">GeroScience</span><span class="pub-tag">Alami</span><span class="pub-tag">Seabright</span><a href="https://doi.org/10.1007/s11357-024-01168-2" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2023 ══ -->
+<div class="year-group">
+  <div class="year-heading">2023</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Children's scientific and religious thinking in Indonesia</div>
+      <div class="pub-authors">Anggoro, F., Jee, B., Peregrino, J., <strong>Erut, A.</strong>, Legare, C.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the Annual Meeting of the Cognitive Science Society · vol. 45</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">El conocimiento en la Alta Amazonía: Voces indígenas de los pueblos Urarina, Shuar y Shiwiar</div>
+      <div class="pub-authors">Arahuate Manizari, M., Caringkia, J., Gualinga Chuji, M., Tsetsekip Santi, M., Fabiano, E., Homan, J., & <strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Epistemologías andinas y amazónicas · PUCP</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+
+      <div class="pub-authors"><strong>Erut, A.</strong>, Smith, K., Barrett, H.C.</div>
+      <div class="pub-meta"><span class="pub-journal">Cognition</span><span class="pub-tag">Erut</span><a href="https://www.sciencedirect.com/science/article/abs/pii/S0010027723001865" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Quantifying quality: The impact of measures of school quality on children's academic achievement across diverse societies</div>
+      <div class="pub-authors">Rawlings, B., Davis, H.E., Anum, A., <strong>Erut, A.</strong>, Legare, C.H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Developmental Science</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Innovation-Facilitating Networks Create Inequality</div>
+      <div class="pub-authors"><strong>Moser, C.</strong> & Smaldino, P.E.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the Royal Society B · vol. 290</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1098/rspb.2023.2281" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Aggressive Mimicry and the Evolution of the Human Cognitive Niche</div>
+      <div class="pub-authors"><strong>Moser, C.</strong>, Buckner, W., Sarian, M., Winking, J.</div>
+      <div class="pub-meta"><span class="pub-journal">Human Nature</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1007/s12110-023-09458-y" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Maintaining transient diversity is a general principle for improving collective problem solving</div>
+      <div class="pub-authors">Smaldino, P.E., <strong>Moser, C.</strong>, Peréz Velilla, A., Werling, M.</div>
+      <div class="pub-meta"><span class="pub-journal">Perspectives on Psychological Science</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1177/17456916231180100" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">All Intelligence is Collective Intelligence</div>
+      <div class="pub-authors">Falandays, J.B., Kaaronen, R.O., <strong>Moser, C.J.</strong>, Rorot, W. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Journal of Multiscale Neuroscience · vol. 2</span><span class="pub-tag">Moser</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Decentralized core-periphery structure in social networks accelerates cultural innovation in agent-based model</div>
+      <div class="pub-authors">Milzman, J., <strong>Moser, C.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">AAMAS 2023 Proceedings</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.5555/3545946.3598897" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Metapopulation dynamics of SARS-CoV-2 transmission in a small-scale Amazonian society</div>
+      <div class="pub-authors">Kraft, T.S., <strong>Seabright, E.</strong>, <strong>Alami, S.</strong>, Gurven, M.D. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">PLOS Biology</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span><a href="https://doi.org/10.1371/journal.pbio.3002108" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Gender disparities in material and educational resources differ by kinship system</div>
+      <div class="pub-authors">Cully, S.M., Mattison, P.M., Beheim, B.A., <strong>Seabright, E.</strong>, <strong>Alami, S.</strong> et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Philosophical Transactions B</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span><a href="https://doi.org/10.1098/rstb.2022.0299" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Brain volume, energy balance, and cardiovascular health in two nonindustrial South American populations</div>
+      <div class="pub-authors">Kaplan, H., Hooper, P.L., Gatz, M., <strong>Seabright, E.</strong>, <strong>Alami, S.</strong>, Irimia, A. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the National Academy of Sciences</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span><a href="https://doi.org/10.1073/pnas.2205448120" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Fatherhood and Child-Father Attachment in Two Small-Scale Societies</div>
+      <div class="pub-authors">MacGillivray, T., von Rueden, C., Yurkowski, K., <strong>Alami, S.</strong>, Bureau, J.-F. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Journal of Cross-Cultural Psychology</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Testosterone is positively associated with coronary artery calcium in a low cardiovascular disease risk population</div>
+      <div class="pub-authors">Trumble, B.C., Negrey, J.D., Koebele, S.V., <strong>Alami, S.</strong> et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Evolution, Medicine, and Public Health</span><span class="pub-tag">Alami</span><span class="pub-tag">Seabright</span><a href="https://doi.org/10.1093/emph/eoad038" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Reproductive inequality in humans and other mammals</div>
+      <div class="pub-authors">Ross, C., Hooper, P.L., Smith, J.E., <strong>Seabright, E.</strong>, Borgerhoff Mulder, M. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the National Academy of Sciences</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2023</div>
+    <div>
+      <div class="pub-title">Atherosclerosis in Indigenous Tsimane: A Contemporary Perspective</div>
+      <div class="pub-authors">Thompson, R.C., Thomas, G.S., Neunuebel, A., <strong>Seabright, E.</strong>, Kaplan, H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Bioarchaeology of Metabolic Bone Disease and Cardiovascular Disease (Book Chapter)</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2022 ══ -->
+<div class="year-group">
+  <div class="year-heading">2022</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Developing Cross-Cultural Data Infrastructures (CCDIs) for Research in Cognitive and Behavioral Sciences</div>
+      <div class="pub-authors">Burger, O., Chen, L., <strong>Erut, A.</strong>, Legare, C.H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Review of Philosophy and Psychology</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Acoustic regularities in infant-directed speech and song across cultures</div>
+      <div class="pub-authors">Hilton, C.B., <strong>Moser, C.J.</strong>, Bertolo, M. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Nature Human Behaviour</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1038/s41562-022-01410-x" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Moral Parochialism and Causal Appraisal of Transgressive Harm in Seoul and Los Angeles</div>
+      <div class="pub-authors">Holbrook, C., Yoon, L., Fessler, D.M.T., <strong>Moser, C.</strong> et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Scientific Reports · vol. 12</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1038/s41598-022-18521-0" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Organizational Development as Generative Entrenchment</div>
+      <div class="pub-authors"><strong>Moser, C.</strong> & Smaldino, P.E.</div>
+      <div class="pub-meta"><span class="pub-journal">Entropy · vol. 24</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.3390/e24070879" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Hidden Clusters Beyond Ethnic Boundaries</div>
+      <div class="pub-authors">Peréz Velilla, A., <strong>Moser, C.</strong>, Smaldino, P.E.</div>
+      <div class="pub-meta"><span class="pub-journal">Behavioral and Brain Sciences · vol. 45</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1017/S0140525X21002090" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright alami">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Repercussions of patrilocal residence on mothers' social support networks among Tsimane forager-farmers</div>
+      <div class="pub-authors"><strong>Seabright, E.</strong>, <strong>Alami, S.</strong>, Kraft, T.S., Davis, H.E., Kaplan, H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Philosophical Transactions B</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span><a href="https://doi.org/10.1098/rstb.2021.0442" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright alami">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Female cooperative labour networks in hunter-gatherers and horticulturalists</div>
+      <div class="pub-authors">Kraft, T.S., Cummings, D.K., <strong>Alami, S.</strong>, <strong>Seabright, E.</strong>, Kaplan, H., Gurven, M. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Philosophical Transactions B</span><span class="pub-tag">Seabright</span><span class="pub-tag">Alami</span><a href="https://doi.org/10.1098/rstb.2021.0431" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2022</div>
+    <div>
+      <div class="pub-title">Lp(a) is Associated With Coronary Artery Calcification in a Population With Exceptionally Low Cardiovascular Disease Risk</div>
+      <div class="pub-authors">Trumble, B.C., Thompson, R.C., Elizalde, C.A., <strong>Alami, S.</strong>, Thomas, G.S. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Circulation · Conference Abstract</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2021 ══ -->
+<div class="year-group">
+  <div class="year-heading">2021</div>
+
+  <div class="pub-item reveal" data-authors="moser">
+    <div class="pub-year">2021</div>
+    <div>
+      <div class="pub-title">Why don't cockatoos have war songs?</div>
+      <div class="pub-authors"><strong>Moser, C.</strong>, Ackerman, J., Dayer, A., Proksch, S., Smaldino, P.E.</div>
+      <div class="pub-meta"><span class="pub-journal">Behavioral and Brain Sciences · vol. 44</span><span class="pub-tag">Moser</span><a href="https://doi.org/10.1017/S0140525X20001442" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2021</div>
+    <div>
+      <div class="pub-title">Female–Female Competition Occurs Irrespective of Patrilocality</div>
+      <div class="pub-authors">Rucas, S.L., <strong>Alami, S.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Archives of Sexual Behavior</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2021</div>
+    <div>
+      <div class="pub-title">The Indigenous South American Tsimane Exhibit Relatively Modest Decrease in Brain Volume With Age Despite High Systemic Inflammation</div>
+      <div class="pub-authors">Irimia, A., Chaudhari, N.N., <strong>Alami, S.</strong>, <strong>Seabright, E.</strong>, Kaplan, H., Gurven, M.D. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Journals of Gerontology: Series A · vol. 76</span><span class="pub-tag">Alami</span><span class="pub-tag">Seabright</span><a href="https://doi.org/10.1093/gerona/glab138" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2021</div>
+    <div>
+      <div class="pub-title">Very low prevalence of atrial fibrillation among Bolivian forager-farmers</div>
+      <div class="pub-authors">Rowan, C., Eskander, M.A., <strong>Seabright, E.</strong>, Eid Rodriguez, D., Kaplan, H., Gurven, M. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Annals of Global Health</span><span class="pub-tag">Seabright</span><a href="https://doi.org/10.5334/aogh.3252" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2020 ══ -->
+<div class="year-group">
+  <div class="year-heading">2020</div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2020</div>
+    <div>
+      <div class="pub-title">Mother's social status is associated with child health in a horticulturalist population</div>
+      <div class="pub-authors"><strong>Alami, S.</strong>, von Rueden, C., <strong>Seabright, E.</strong>, Kraft, T.S., Blackwell, A.D., Stieglitz, J., Kaplan, H., Gurven, M.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the Royal Society B</span><span class="pub-tag">Alami</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami seabright">
+    <div class="pub-year">2020</div>
+    <div>
+      <div class="pub-title">Rapidly declining body temperature in a tropical human population</div>
+      <div class="pub-authors">Gurven, M., Kraft, T.S., <strong>Alami, S.</strong>, <strong>Seabright, E.</strong>, Kaplan, H., Stieglitz, J., Trumble, B.C. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Science Advances</span><span class="pub-tag">Alami</span><span class="pub-tag">Seabright</span><a href="https://doi.org/10.1126/sciadv.abc6599" target="_blank" class="pub-doi">doi →</a></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2020</div>
+    <div>
+      <div class="pub-title">Social norms and cultural diversity in the development of third-party punishment</div>
+      <div class="pub-authors">House, B.R., Kanngiesser, P., Barrett, H.C., <strong>Erut, A.</strong> et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the Royal Society B</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2019</div>
+    <div>
+      <div class="pub-title">Universal norm psychology leads to societal diversity in prosocial behaviour and development</div>
+      <div class="pub-authors">House, B.R., Kanngiesser, P., Barrett, H.C., Broesch, T., Cebioglu, S., Crittenden, A.N., <strong>Erut, A.</strong>, Lew-Levy, S., Sebastian-Enesco, C., Smith, A., Yilmaz, S., Silk, J.B.</div>
+      <div class="pub-meta"><span class="pub-journal">Nature Human Behaviour · vol. 4</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2019 ══ -->
+    <div class="pub-year">2020</div>
+    <div>
+      <div class="pub-title">Epicardial fat thickness and hepatic fat in a remote native population with very low rates of coronary calcium</div>
+      <div class="pub-authors">Thompson, R.C., Trumble, B.C., Neunuebel, A., <strong>Seabright, E.</strong>, Cummings, D., Kaplan, H. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Journal of the American College of Cardiology</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2019 ══ -->
+<div class="year-group">
+  <div class="year-heading">2019</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2019</div>
+    <div>
+      <div class="pub-title">Universal norm psychology leads to societal diversity in prosocial behaviour and development</div>
+      <div class="pub-authors">House, B.R., Kanngiesser, P., Barrett, H.C., Broesch, T., Cebioglu, S., Crittenden, A.N., <strong>Erut, A.</strong>, Lew-Levy, S., Sebastian-Enesco, C., Smith, A., Yilmaz, S., Silk, J.B.</div>
+      <div class="pub-meta"><span class="pub-journal">Nature Human Behaviour · vol. 4</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2019</div>
+    <div>
+      <div class="pub-title">Using computed tomography to assess brain volumetrics in aging</div>
+      <div class="pub-authors">Irimia, A., Kaplan, H., Trumble, B.C., <strong>Alami, S.</strong>, Finch, C. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Alzheimer's & Dementia</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2018 ══ -->
+<div class="year-group">
+  <div class="year-heading">2018</div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Cross-cultural invariances in the architecture of shame</div>
+      <div class="pub-authors">Sznycer, D., Xygalatas, D., Agey, E., <strong>Alami, S.</strong>, Tooby, J. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the National Academy of Sciences</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Invariances in the architecture of pride across small-scale societies</div>
+      <div class="pub-authors">Sznycer, D., Xygalatas, D., <strong>Alami, S.</strong>, Tooby, J. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the National Academy of Sciences</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Sex Differences in Political Leadership in An Egalitarian Society</div>
+      <div class="pub-authors">von Rueden, C., <strong>Alami, S.</strong>, Kaplan, H., Gurven, M.</div>
+      <div class="pub-meta"><span class="pub-journal">Evolution and Human Behavior</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="alami">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Low Perceived Control Over Health is Associated With Lower Treatment Uptake in a High Mortality Population of Bolivian Forager-Farmers</div>
+      <div class="pub-authors"><strong>Alami, S.</strong>, Stieglitz, J., Kaplan, H., Gurven, M.</div>
+      <div class="pub-meta"><span class="pub-journal">Social Science & Medicine</span><span class="pub-tag">Alami</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Adopted daughters and adopted daughters-in-law in Taiwan: a mortality analysis</div>
+      <div class="pub-authors">Mattison, S.M., <strong>Seabright, E.</strong>, Reynolds, A.Z., Cao, J.B., Brown, M.J., Feldman, M.W.</div>
+      <div class="pub-meta"><span class="pub-journal">Royal Society Open Science · vol. 5</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="seabright">
+    <div class="pub-year">2018</div>
+    <div>
+      <div class="pub-title">Parental hormones are associated with crop loss and family sickness following catastrophic flooding in lowland Bolivia</div>
+      <div class="pub-authors">Trumble, B.C., Stieglitz, J., Jaeggi, A., Beheim, B., <strong>Seabright, E.</strong>, Kaplan, H., Gurven, M.D. et al.</div>
+      <div class="pub-meta"><span class="pub-journal">Physiology and Behavior</span><span class="pub-tag">Seabright</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2016 ══ -->
+<div class="year-group">
+  <div class="year-heading">2016</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2016</div>
+    <div>
+      <div class="pub-title">La representación de la métrica en la música tonal: El espectro métrico</div>
+      <div class="pub-authors"><strong>Erut, A.</strong> & Wiman, F.</div>
+      <div class="pub-meta"><span class="pub-journal">Epistemus: Revista de Estudios en Música, Cognición y Cultura · vol. 3</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2014 ══ -->
+<div class="year-group">
+  <div class="year-heading">2014</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2014</div>
+    <div>
+      <div class="pub-title">Transmisión musical en una comunidad Wichí del Chaco Occidental</div>
+      <div class="pub-authors"><strong>Erut, A.</strong></div>
+      <div class="pub-meta"><span class="pub-journal">Argentinian National Foundations for the Arts · Buenos Aires</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 2012 ══ -->
+<div class="year-group">
+  <div class="year-heading">2012</div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2012</div>
+    <div>
+      <div class="pub-title">Grouping spectrum: Toward a redefinition of the concept of musical understanding</div>
+      <div class="pub-authors"><strong>Erut, A.</strong> & Wiman, F.</div>
+      <div class="pub-meta"><span class="pub-journal">Associação Brasileira de Cognição & Artes Musicais · Florianópolis, Brasil</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+
+  <div class="pub-item reveal" data-authors="erut">
+    <div class="pub-year">2012</div>
+    <div>
+      <div class="pub-title">El espectro métrico: Aspectos metodológicos de su aplicación en la enseñanza musical</div>
+      <div class="pub-authors"><strong>Erut, A.</strong> & Wiman, F.</div>
+      <div class="pub-meta"><span class="pub-journal">Proceedings of the 2nd Meeting of the Seminar of Acquisition and Development of Musical Language · SACCoM · Buenos Aires</span><span class="pub-tag">Erut</span></div>
+    </div>
+  </div>
+</div>
 
 </main>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div style="display:flex;align-items:center;gap:0.9rem;">
@@ -792,97 +869,13 @@
         <div style="font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.15em;color:rgba(245,240,232,0.35);text-transform:uppercase;margin-top:2px;">UM6P · School of Collective Intelligence</div>
       </div>
     </div>
-    <div class="footer-meta">
-      © 2025 HERG · UM6P, Rabat<br>
-      School of Collective Intelligence
-    </div>
+    <div class="footer-meta">© 2026 HERG · UM6P, Rabat<br>School of Collective Intelligence</div>
   </div>
 </footer>
 
-<script>
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-    });
-  }, { threshold: 0.08 });
-  revealEls.forEach(el => observer.observe(el));
-
-  let currentAuthor = 'all';
-  let currentQuery = '';
-
-  function getSearchableText(item) {
-    return [
-      item.querySelector('.pub-title')?.textContent || '',
-      item.querySelector('.pub-authors')?.textContent || '',
-      item.querySelector('.pub-journal')?.textContent || '',
-      item.dataset.authors || ''
-    ].join(' ').toLowerCase();
-  }
-
-  function applyFilters() {
-    const items = document.querySelectorAll('.pub-item');
-    let count = 0;
-
-    items.forEach(item => {
-      const authors = item.dataset.authors || '';
-      const matchesAuthor = currentAuthor === 'all' || authors.includes(currentAuthor);
-      const matchesSearch = currentQuery === '' || getSearchableText(item).includes(currentQuery);
-      const show = matchesAuthor && matchesSearch;
-      item.classList.toggle('hidden', !show);
-      if (show) count++;
-    });
-
-    document.querySelectorAll('.year-group').forEach(group => {
-      const visible = group.querySelectorAll('.pub-item:not(.hidden)').length;
-      group.style.display = visible ? '' : 'none';
-    });
-
-    document.getElementById('filter-count').textContent =
-      count + (count === 1 ? ' publication' : ' publications');
-    document.getElementById('noResults').classList.toggle('visible', count === 0);
-  }
-
-  function filter(author, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentAuthor = author;
-    applyFilters();
-  }
-
-  function handleSearch(input) {
-    currentQuery = input.value.trim().toLowerCase();
-    document.getElementById('searchClear').classList.toggle('visible', currentQuery !== '');
-    applyFilters();
-  }
-
-  function clearSearch() {
-    document.getElementById('pubSearch').value = '';
-    currentQuery = '';
-    document.getElementById('searchClear').classList.remove('visible');
-    applyFilters();
-  }
-</script>
-
-<!-- ══ COOKIE NOTICE ══ -->
-<div id="cookieBanner" style="
-  display:none;
-  position:fixed;
-  bottom:0;left:0;right:0;
-  z-index:9000;
-  background:#1a1208;
-  border-top:2px solid #c8860a;
-  padding:1.2rem 4rem;
-  display:flex;
-  align-items:center;
-  gap:2rem;
-  flex-wrap:wrap;
-">
-  <p style="font-family:'Crimson Pro',serif;font-size:0.92rem;font-weight:300;color:rgba(245,240,232,0.75);flex:1;min-width:260px;line-height:1.6;margin:0;">
-    This site does not use tracking cookies or third-party analytics.
-    <a href="#" style="color:#c8860a;text-decoration:underline;" onclick="showPrivacy(event)">Privacy notice</a>.
-  </p>
+<!-- Cookie Banner -->
+<div id="cookieBanner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9000;background:#1a1208;border-top:2px solid #c8860a;padding:1.2rem 4rem;flex-wrap:wrap;align-items:center;gap:2rem;">
+  <p style="font-family:'Crimson Pro',serif;font-size:0.92rem;font-weight:300;color:rgba(245,240,232,0.75);flex:1;min-width:260px;line-height:1.6;margin:0;">This site does not use tracking cookies or third-party analytics. <a href="#" style="color:#c8860a;text-decoration:underline;" onclick="showPrivacy(event)">Privacy notice</a>.</p>
   <div style="display:flex;gap:0.8rem;flex-shrink:0;">
     <button onclick="acceptCookies()" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;background:#c8860a;color:#1a1208;border:none;padding:0.6rem 1.4rem;cursor:pointer;font-weight:600;">Accept</button>
     <button onclick="dismissCookies()" style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;background:transparent;color:rgba(245,240,232,0.5);border:1px solid rgba(245,240,232,0.2);padding:0.6rem 1.4rem;cursor:pointer;">Dismiss</button>
@@ -905,6 +898,80 @@
 </div>
 
 <script>
+  // Hamburger
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Filter + search
+  let currentAuthor = 'all';
+  let currentQuery = '';
+
+  function getSearchableText(item) {
+    return [
+      item.querySelector('.pub-title')?.textContent || '',
+      item.querySelector('.pub-authors')?.textContent || '',
+      item.querySelector('.pub-journal')?.textContent || '',
+      item.dataset.authors || ''
+    ].join(' ').toLowerCase();
+  }
+
+  function applyFilters() {
+    const items = document.querySelectorAll('.pub-item');
+    let count = 0;
+    items.forEach(item => {
+      const authors = item.dataset.authors || '';
+      const matchesAuthor = currentAuthor === 'all' || authors.includes(currentAuthor);
+      const matchesSearch = currentQuery === '' || getSearchableText(item).includes(currentQuery);
+      const show = matchesAuthor && matchesSearch;
+      item.classList.toggle('hidden', !show);
+      if (show) count++;
+    });
+    document.querySelectorAll('.year-group').forEach(group => {
+      const visible = group.querySelectorAll('.pub-item:not(.hidden)').length;
+      group.style.display = visible ? '' : 'none';
+    });
+    document.getElementById('filter-count').textContent = count + (count === 1 ? ' publication' : ' publications');
+    document.getElementById('noResults').classList.toggle('visible', count === 0);
+  }
+
+  function filter(author, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentAuthor = author;
+    applyFilters();
+  }
+
+  function handleSearch(input) {
+    currentQuery = input.value.trim().toLowerCase();
+    document.getElementById('searchClear').classList.toggle('visible', currentQuery !== '');
+    applyFilters();
+  }
+
+  function clearSearch() {
+    document.getElementById('pubSearch').value = '';
+    currentQuery = '';
+    document.getElementById('searchClear').classList.remove('visible');
+    applyFilters();
+  }
+
+  // Cookie banner
   function showCookieBanner() {
     if (!localStorage.getItem('herg_cookie_consent')) {
       document.getElementById('cookieBanner').style.display = 'flex';
